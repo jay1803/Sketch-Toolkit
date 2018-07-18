@@ -1,6 +1,7 @@
 {
   "name": "sketch-toolkit",
-  "version": "0.1.0",
+  "version": "0.1.1",
+  "description": "a test plugin for Sketch",
   "engines": {
     "sketch": ">=3.0"
   },

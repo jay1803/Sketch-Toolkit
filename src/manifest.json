@@ -1,18 +1,42 @@
 {
-  "compatibleVersion": 3,
-  "bundleVersion": 1,
-  "icon": "icon.png",
-  "commands": [
-    {
-      "name": "my-command",
-      "identifier": "my-command-identifier",
-      "script": "./my-command.js"
-    }
-  ],
-  "menu": {
-    "title": "sketch-toolkit",
-    "items": [
-      "my-command-identifier"
-    ]
-  }
+	"identifier": "com.sketchapp.maxoxo.sketch-toolkit",
+	"compatibleVersion": 3,
+	"bundleVersion": 1,
+	"icon": "icon.png",
+	"version": "0.1.1",
+	"commands": [
+		{
+			"name": "选择同名的图层",
+			"identifier": "select_same_name_layers",
+			"script": "./selection/select_same_name_layers.js",
+			"handler": "on_same_name_layers",
+			"shortcut": ""
+		},
+		{
+			"name": "生成颜色色值",
+			"identifier": "generate_color_value",
+			"script": "./generator/color_value.js",
+			"handler": "on_color_value",
+			"shortcut": ""
+		},
+		{
+			"name": "生成排版规模",
+			"identifier": "generate_typography_scale",
+			"script": "./generator/typography_scale.js",
+			"handler": "on_typography_scale",
+			"shortcut": ""
+		}
+	],
+	"menu": {
+		"title": "Toolkit",
+		"items": [{
+				"title": "选择器",
+				"items": ["select_same_name_layers"]
+			},
+			{
+				"title": "生成器",
+				"items": ["generate_color_value", "generate_typography_scale"]
+			}
+		]
+	}
 }
