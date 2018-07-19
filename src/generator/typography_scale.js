@@ -37,9 +37,9 @@ const text_sizes = {
 
 const text_aligns = [Text.Alignment.left, Text.Alignment.center, Text.Alignment.right]
 
-function generator(page, text){
+function addTextLayer(layerGroup, text){
     new Text({
-        parent: text.parent,
+        parent: layerGroup,
         text: text.textValue,
         alignment: text.alignment,
         style: {
@@ -51,7 +51,7 @@ function generator(page, text){
         }
     })
 
-    var layer = page.lastLayer()
+    var layer = layerGroup.lastLayer()
     // console.log(layer)
     layer.name = text.name
     layer.setFontSize(text.fontSize)
@@ -135,7 +135,6 @@ export function on_typography_scale(context) {
                 for (var text_align in text_aligns) {
                     var newText = {
                         'name': text_theme + "-" + text_style + "/" + text_size + "/" + text_aligns[text_align],
-                        'parent': page,
                         'alignment': text_aligns[text_align],
                         'color': text_styles[text_theme][text_style],
                         'fontFamily': 'PingFangSC-Regular',
@@ -145,7 +144,7 @@ export function on_typography_scale(context) {
                         'fontSize': text_sizes[text_size],
                         'textValue': '文本标签'
                     }
-                    var layer = generator(page, newText)
+                    var layer = addTextLayer(page, newText)
                     var newStyle = initSharedStyle_fromLayer(layer)
                     // console.log(newStyle.value().hasTextStyle())
                     // console.log(newStyle.type())
