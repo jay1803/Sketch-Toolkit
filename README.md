@@ -1,4 +1,10 @@
-# sketch-toolkit
+# Sketch Toolkit
+
+Sketch 官方的 API 稀烂的情况下，最终查阅很多网络资料来整理一些基本的方法，虽然这个插件有一些可能用的命令，但其主要目的在于 Fuctions，也就是将 Sketch API 写成更简单直观的方法。
+
+介于 Sketch/dom 似乎才是最优解，因此在 dom 完善之后，这里的方法可能并不如 dom 更直观了。
+
+如果你对编写 Sketch 插件感兴趣，倒是可以考虑用用看，一些常用的方法都在 functions.js 当中。
 
 _This plugin was created using `skpm`. For a detailed explanation on how things work, checkout the [skpm Readme](https://github.com/skpm/skpm/blob/master/README.md)._
 
