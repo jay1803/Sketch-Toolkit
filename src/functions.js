@@ -9,9 +9,13 @@ const Rectangle = require('sketch/dom').Rectangle
 
 const documentDom = require('sketch/dom').getSelectedDocument()
 const document = context.document
+const data = document.documentData()
 const currentPage = document.currentPage()
 const page = document.selectedPage
-const selection = document.selectedLayers
+const selection = document.selectedLayers()
+
+const textStylesContainer = data.layerTextStyles()
+const stylesContainer = data.layerStyles()
 
 
 /**
@@ -32,6 +36,70 @@ export function getLayer_byName(name) {
 export function getLayers_byName(name) {
     var predicate = NSPredicate.predicateWithFormat("name == %@", name)
     return currentPage.children().filteredArrayUsingPredicate(predicate)
+}
+
+/**
+ *
+ *
+ * @export 根据名称找到共享的文本样式
+ * @param {String} name
+ * @returns
+ */
+export function getTextSharedStyle_byName(name) {
+    var predicate = NSPredicate.predicateWithFormat("name == %@", name)
+    return textStylesContainer.objects().filteredArrayUsingPredicate(predicate).firstObject()
+}
+
+export function getTextSharedStyle_byID(id) {
+    return textStylesContainer.sharedObjectWithID(id)
+}
+
+export function getSharedStyle_byID(id) {
+    return stylesContainer.sharedObjectWithID(id)
+}
+
+/**
+ *
+ *
+ * @export 根据某个属性之找到某个对象
+ * @param {String} object
+ * @param {String} property
+ * @param {String} value
+ * @returns
+ */
+export function getObjectBy(object, property, value) {
+    var predicate
+    switch (property) {
+        case 'id':
+            predicate = NSPredicate.predicateWithFormat("objectID == %@", value)
+            break;
+        case 'name':
+            predicate = NSPredicate.predicateWithFormat("name == %@", name)
+        default:
+            break;
+    }
+    switch (object) {
+        case 'layer':
+            return currentPage.children().filteredArrayUsingPredicate(predicate)
+        case 'textSharedStyle':
+            return textStylesContainer.objects().filteredArrayUsingPredicate(predicate).firstObject()
+        case 'sharedStyle':
+            return stylesContainer.objects().filteredArrayUsingPredicate(predicate).firstObject()
+        default:
+            break;
+    }
+}
+
+/**
+ *
+ *
+ * @export 根据名称找到共享的样式
+ * @param {String} name
+ * @returns
+ */
+export function getSharedStyle_byName(name) {
+    var predicate = NSPredicate.predicateWithFormat("name == %@", name)
+    return stylesContainer.objects().filteredArrayUsingPredicate(predicate).firstObject()
 }
 
 /**
@@ -147,4 +215,132 @@ export function colorTone(color) {
  */
 export function getColor_fromLayer(layer) {
     return layer.style().fills()[0].color()
+}
+
+
+/**
+ *
+ *
+ * @export 根据的图层样式添加SharedStyle
+ * @param {Object} layer - MSLayer，如果是文本则会添加文本图层，如果是形状则是样式
+ * @returns {Object} MSSharedObject
+ */
+export function initSharedStyle_fromLayer(layer) {
+    if (layer.style().type() != 2) {
+        return document.showMessage("这都不是样式")
+    }
+    if (layer.style().hasTextStyle) {
+        return MSSharedStyle.alloc().initWithName_firstInstance(layer.name(), layer.style())
+    } else {
+        return MSSharedStyle.alloc().initWithName_firstInstance(layer.name(), layer.style())
+    }
+}
+
+export function addSharedStyle_fromLayer(style) {
+    if (style.type() != 3) {
+        return document.showMessage("需要的是 MSSharedStyle")
+    }
+    if (style.value().hasTextStyle) {
+        textStylesContainer.addSharedObject(style)
+    } else {
+        stylesContainer.addSharedObject(style)
+    }
+}
+
+/**
+ *
+ *
+ * @export 将HEX转换为RGB数值
+ * @param {String} hex - 颜色 HEX 数值
+ * @returns
+ */
+export function getRGB_fromHEX(hex) {
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+        red: parseInt(result[1], 16),
+        green: parseInt(result[2], 16),
+        blue: parseInt(result[3], 16)
+    } : null;
+}
+
+
+/**
+ *
+ *
+ * @export 以HEX数值生成MSColor
+ * @param {*} hex
+ * @returns
+ */
+export function newMSColor_fromHEX(hex) {
+    var color = getRGB_fromHEX(hex)
+    return MSColor.colorWithRed_green_blue_alpha(color.red / 255, color.green / 255, color.blue / 255, 1)
+}
+
+/**
+ *
+ *
+ * @export 根据当前图层，同步同层的共享样式
+ * @param {object} layer - 需要更新的图层
+ * @returns
+ */
+export function updateSharedStyle_fromLayer(layer) {
+    const sharedID = layer.style().sharedObjectID()
+    if (layer instanceof MSTextLayer) {
+        const textSharedObject = getTextSharedStyle_byID(sharedID)
+        if (textSharedObject.isOutOfSyncWithInstance(layer)) {
+            return textSharedObject.updateToMatch(layer.style())
+        }
+    } else if (layer instanceof MSShapeGroup) {
+        const sharedObject = getSharedStyle_byID(sharedID)
+        if (sharedObject.isOutOfSyncWithInstance(layer)) {
+            sharedObject.updateToMatch(layer.style())
+        }
+    } else {
+        return document.showMessage("Wrong Layer.")
+    }
+}
+
+/**
+ *
+ *
+ * @export 判断改名称的图层是否存在
+ * @param {String} name - 图层名称
+ * @returns
+ */
+export function isLayerExist(name) {
+    if (getLayer_byName(name)) {
+        return true
+    } else {
+        return false
+    }
+}
+
+/**
+ *
+ *
+ * @export 该名称的共享文本样式是否存在
+ * @param {String} name
+ * @returns
+ */
+export function isSharedTextStyleExist(name) {
+    if (getTextSharedStyle_byName(name)) {
+        return true
+    } else {
+        return false
+    }
+}
+
+/**
+ *
+ *
+ * @export 判断该图层是否有共享样式
+ * @param {Object} layer
+ * @returns
+ */
+export function hasSharedStyle(layer) {
+    if (layer.style().sharedObjectID()) {
+        return true
+    } else {
+        return false
+    }
 }

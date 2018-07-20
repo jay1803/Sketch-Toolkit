@@ -3,7 +3,7 @@ import { getHex_fromLayer, getColor_fromLayer, colorTone, addTextLayer } from '.
 const sketch = require('sketch')
 
 function generateColorValue_fromLayer(parent, layer) {
-    // console.log(layer.defaultName())
+
     if (layer.defaultName() != 'Rectangle') {
         return 'not shape'
     }
@@ -28,7 +28,7 @@ function generateColorValue_fromLayer(parent, layer) {
         'fontSize': 14,
         'textValue': '#' + colorValue
     }
-    // console.log(newText)
+
     return addTextLayer(parent, newText)
 }
 
@@ -40,8 +40,6 @@ export function on_color_value(context) {
     if (layers[0].defaultName() === sketch.Types.Artboard) {
         layers = page.layers[0].layers()
     }
-    // console.log(layers)
-    // console.log(layers.length)
 
     for (let i = 0; i < layers.length; i++) {
         const layer = layers[i];

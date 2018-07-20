@@ -1,3 +1,5 @@
+import { addTextLayer, newMSColor_fromHEX, initSharedStyle_fromLayer, addSharedStyle_fromLayer, getHex_fromMSColor, isLayerExist, getLayer_byName, isSharedTextStyleExist, getTextSharedStyle_byName, updateSharedStyle_fromLayer, hasSharedStyle } from '../functions';
+
 const Text = require('sketch/dom').Text
 const Style = require('sketch/dom').Style
 const Shape = require('sketch/dom').Shape
@@ -33,35 +35,7 @@ const text_sizes = {
     "h1": 96
 }
 
-//sketchtool ~/Library/Application\ Support/com.bohemiancoding.sketch3/Plugins/plugin.sketchplugin "" --without-activating
-
 const text_aligns = [Text.Alignment.left, Text.Alignment.center, Text.Alignment.right]
-
-function addTextLayer(layerGroup, text){
-    new Text({
-        parent: layerGroup,
-        text: text.textValue,
-        alignment: text.alignment,
-        style: {
-            fills: [{
-                color: text.color,
-                fillType: Style.FillType.Color
-            }],
-            borders: []
-        }
-    })
-
-    var layer = layerGroup.lastLayer()
-    // console.log(layer)
-    layer.name = text.name
-    layer.setFontSize(text.fontSize)
-    layer.setLineHeight(text.lineHeight)
-    layer.setFontPostscriptName(text.fontFamily)
-    layer.frame().setX(text.positionX)
-    layer.frame().setY(text.positionY)
-
-    return layer
-}
 
 function background(page, lastLayer) {
     new Shape({
@@ -75,7 +49,7 @@ function background(page, lastLayer) {
             borders: []
         }
     })
-    // console.log(positionX, positionY, layer.frame().height(), layer.frame().width())
+
     var shape = page.lastLayer()
     shape.frame().setX(-100)
     shape.frame().setY(-100)
@@ -85,47 +59,12 @@ function background(page, lastLayer) {
     shape.setIsLocked(1)
 }
 
-function initSharedStyle_fromLayer(layer) {
-    // console.log(layer.style().type())
-    if (layer.style().type() != 2) {
-        return document.showMessage("这都不是样式")
-    }
-    if (layer.style().hasTextStyle) {
-        // console.log("FOUND TEXTSTYLE")
-        return MSSharedStyle.alloc().initWithName_firstInstance(layer.name(), layer.style())
-    } else {
-        return MSSharedStyle.alloc().initWithName_firstInstance(layer.name(), layer.style())
-    }
-}
-
-function addSharedStyle_fromLayer(context, style){
-    const document = context.document
-    const data = document.documentData()
-    const textStylesContainer = data.layerTextStyles()
-    const stylesContainer = data.layerStyles()
-    if (style.type() != 3) {
-        // console.log("啥都没有添加")
-        return document.showMessage("需要的是 MSSharedStyle")
-    }
-    // console.log("找了样式")
-    if (style.value().hasTextStyle) {
-        // console.log("正在添加文本样式")
-        textStylesContainer.addSharedObject(style)
-    } else {
-        // console.log("正在添加图形样式")
-        stylesContainer.addSharedObject(style)
-    }
-}
-
 var positionX = 0
 var positionY = 0
 
 export function on_typography_scale(context) {
     const document = context.document
-    // console.log(document)
-    const pages = document.pages()
-    var page = pages[0]
-    // console.log(page)
+    const page = document.currentPage()
 
     document.showMessage("正在生成...")
 
@@ -133,10 +72,12 @@ export function on_typography_scale(context) {
         for (var text_size in text_sizes) {
             for (var text_style in text_styles[text_theme]) {
                 for (var text_align in text_aligns) {
+                    var colorValue = text_styles[text_theme][text_style]
+                    var color = newMSColor_fromHEX(colorValue)
                     var newText = {
                         'name': text_theme + "-" + text_style + "/" + text_size + "/" + text_aligns[text_align],
                         'alignment': text_aligns[text_align],
-                        'color': text_styles[text_theme][text_style],
+                        'color': color,
                         'fontFamily': 'PingFangSC-Regular',
                         'positionX': positionX,
                         'positionY': positionY,
@@ -144,25 +85,23 @@ export function on_typography_scale(context) {
                         'fontSize': text_sizes[text_size],
                         'textValue': '文本标签'
                     }
-                    var layer = addTextLayer(page, newText)
-                    var newStyle = initSharedStyle_fromLayer(layer)
-                    // console.log(newStyle.value().hasTextStyle())
-                    // console.log(newStyle.type())
-                    addSharedStyle_fromLayer(context, newStyle)
-
+                    var layer
+                    if (isLayerExist(newText.name)) {
+                        layer = getLayer_byName(newText.name)
+                        if (hasSharedStyle(layer) && isSharedTextStyleExist(newText.name)){
+                            updateSharedStyle_fromLayer(layer)
+                        }
+                    } else {
+                        layer = addTextLayer(page, newText)
+                        const newStyle = initSharedStyle_fromLayer(layer)
+                        addSharedStyle_fromLayer(newStyle)
+                    }
                     positionX = layer.frame().x() + layer.frame().width() + 40
-                    // console.log(layer.frame().width())
-                    // console.log(positionX)
-                    // break
                 }
-                // break
             }
-            // break
             positionX = 0
             positionY = layer.frame().y() + layer.frame().height() + 40
         }
-        // break
-        // console.log(positionX, positionY)
     }
     background(page, layer)
 }
