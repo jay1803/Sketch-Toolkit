@@ -36,14 +36,12 @@ export function on_color_value(context) {
     const document = context.document
     const page = document.currentPage()
     var layers = page.layers()
-    // console.log('开始生产...')
     if (layers[0].defaultName() === sketch.Types.Artboard) {
         layers = page.layers[0].layers()
     }
 
     for (let i = 0; i < layers.length; i++) {
         const layer = layers[i];
-        // console.log(layer.defaultName())
         if (layer.defaultName() == 'Rectangle') {
             generateColorValue_fromLayer(page, layer)
         }
