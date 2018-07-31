@@ -6,6 +6,14 @@ Sketch 官方的 API 稀烂的情况下，最终查阅很多网络资料来整�
 
 如果你对编写 Sketch 插件感兴趣，倒是可以考虑用用看，一些常用的方法都在 functions.js 当中。
 
+## 测试软件
+
+```
+sketchplugin identify_name --without-activating
+# 测试颜色
+sketchplugin generate_color_value --without-activating
+```
+
 _This plugin was created using `skpm`. For a detailed explanation on how things work, checkout the [skpm Readme](https://github.com/skpm/skpm/blob/master/README.md)._
 
 ## Usage

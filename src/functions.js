@@ -1,21 +1,21 @@
-const Document = require('sketch/dom').Document
-const Page = require('sketch/dom').Page
-const Artboard = require('sketch/dom').Artboard
-const Style = require('sketch/dom').Style
-const Shape = require('sketch/dom').Shape
-const Group = require('sketch/dom').Group
-const Text = require('sketch/dom').Text
-const Rectangle = require('sketch/dom').Rectangle
+const Document = require('sketch/dom').Document;
+const Page = require('sketch/dom').Page;
+const Artboard = require('sketch/dom').Artboard;
+const Style = require('sketch/dom').Style;
+const Shape = require('sketch/dom').Shape;
+const Group = require('sketch/dom').Group;
+const Text = require('sketch/dom').Text;
+const Rectangle = require('sketch/dom').Rectangle;
 
-const documentDom = require('sketch/dom').getSelectedDocument()
-const document = context.document
-const data = document.documentData()
-const currentPage = document.currentPage()
-const page = document.selectedPage
-const selection = document.selectedLayers()
+const documentDom = require('sketch/dom').getSelectedDocument();
+const document = context.document;
+const data = document.documentData();
+const currentPage = document.currentPage();
+const page = document.selectedPage;
+const selection = document.selectedLayers();
 
-const textStylesContainer = data.layerTextStyles()
-const stylesContainer = data.layerStyles()
+const textStylesContainer = data.layerTextStyles();
+const stylesContainer = data.layerStyles();
 
 
 /**
@@ -24,8 +24,8 @@ const stylesContainer = data.layerStyles()
  * @returns 第一个匹配的图层
  */
 export function getLayer_byName(name) {
-    var predicate = NSPredicate.predicateWithFormat("name == %@", name)
-    return currentPage.children().filteredArrayUsingPredicate(predicate).firstObject()
+    var predicate = NSPredicate.predicateWithFormat("name == %@", name);
+    return currentPage.children().filteredArrayUsingPredicate(predicate).firstObject();
 }
 
 /**
@@ -34,8 +34,8 @@ export function getLayer_byName(name) {
  * @returns {Array} __NSSingleObjectArrayI
  */
 export function getLayers_byName(name) {
-    var predicate = NSPredicate.predicateWithFormat("name == %@", name)
-    return currentPage.children().filteredArrayUsingPredicate(predicate)
+    var predicate = NSPredicate.predicateWithFormat("name == %@", name);
+    return currentPage.children().filteredArrayUsingPredicate(predicate);
 }
 
 /**
@@ -46,16 +46,16 @@ export function getLayers_byName(name) {
  * @returns
  */
 export function getTextSharedStyle_byName(name) {
-    var predicate = NSPredicate.predicateWithFormat("name == %@", name)
-    return textStylesContainer.objects().filteredArrayUsingPredicate(predicate).firstObject()
+    var predicate = NSPredicate.predicateWithFormat("name == %@", name);
+    return textStylesContainer.objects().filteredArrayUsingPredicate(predicate).firstObject();
 }
 
 export function getTextSharedStyle_byID(id) {
-    return textStylesContainer.sharedObjectWithID(id)
+    return textStylesContainer.sharedObjectWithID(id);
 }
 
 export function getSharedStyle_byID(id) {
-    return stylesContainer.sharedObjectWithID(id)
+    return stylesContainer.sharedObjectWithID(id);
 }
 
 /**
@@ -68,23 +68,24 @@ export function getSharedStyle_byID(id) {
  * @returns
  */
 export function getObjectBy(object, property, value) {
-    var predicate
+    var predicate;
     switch (property) {
         case 'id':
-            predicate = NSPredicate.predicateWithFormat("objectID == %@", value)
+            predicate = NSPredicate.predicateWithFormat("objectID == %@", value);
             break;
         case 'name':
-            predicate = NSPredicate.predicateWithFormat("name == %@", name)
+            predicate = NSPredicate.predicateWithFormat("name == %@", name);
+            break;
         default:
             break;
     }
     switch (object) {
         case 'layer':
-            return currentPage.children().filteredArrayUsingPredicate(predicate)
+            return currentPage.children().filteredArrayUsingPredicate(predicate);
         case 'textSharedStyle':
-            return textStylesContainer.objects().filteredArrayUsingPredicate(predicate).firstObject()
+            return textStylesContainer.objects().filteredArrayUsingPredicate(predicate).firstObject();
         case 'sharedStyle':
-            return stylesContainer.objects().filteredArrayUsingPredicate(predicate).firstObject()
+            return stylesContainer.objects().filteredArrayUsingPredicate(predicate).firstObject();
         default:
             break;
     }
@@ -98,8 +99,8 @@ export function getObjectBy(object, property, value) {
  * @returns
  */
 export function getSharedStyle_byName(name) {
-    var predicate = NSPredicate.predicateWithFormat("name == %@", name)
-    return stylesContainer.objects().filteredArrayUsingPredicate(predicate).firstObject()
+    var predicate = NSPredicate.predicateWithFormat("name == %@", name);
+    return stylesContainer.objects().filteredArrayUsingPredicate(predicate).firstObject();
 }
 
 /**
@@ -122,16 +123,16 @@ export function addTextLayer(layerGroup, text) {
         parent: layerGroup,
         text: text.textValue,
         alignment: text.alignment
-    })
+    });
 
-    var layer = layerGroup.lastLayer()
-    layer.name = text.name
-    layer.setTextColor(text.color)
-    layer.setFontSize(text.fontSize)
-    layer.setLineHeight(text.lineHeight)
-    layer.setFontPostscriptName(text.fontFamily)
-    layer.frame().setX(text.positionX)
-    layer.frame().setY(text.positionY)
+    var layer = layerGroup.lastLayer();
+    layer.name = text.name;
+    layer.setTextColor(text.color);
+    layer.setFontSize(text.fontSize);
+    layer.setLineHeight(text.lineHeight);
+    layer.setFontPostscriptName(text.fontFamily);
+    layer.frame().setX(text.positionX);
+    layer.frame().setY(text.positionY);
 
     return layer
 }
@@ -143,7 +144,7 @@ export function addTextLayer(layerGroup, text) {
  * @returns {String} colorValue
  */
 export function getHex_fromMSColor(color) {
-    return color.immutableModelObject().hexValue()
+    return color.immutableModelObject().hexValue();
 }
 
 
@@ -153,8 +154,8 @@ export function getHex_fromMSColor(color) {
  * @returns {String} HEX数值
  */
 export function getHex_fromLayer(layer) {
-    const color = layer.style().fills()[0].color()
-    return getHex_fromMSColor(color)
+    const color = layer.style().fills()[0].color();
+    return getHex_fromMSColor(color);
 }
 
 // 计算颜色的明亮程度，公式来自 Material Design Web Components
@@ -167,7 +168,7 @@ export function getHex_fromLayer(layer) {
  * @returns {Number}
  */
 export function luminance(color) {
-    return 0.2126 * color.red() + 0.7152 * color.green() + 0.0722 * color.blue()
+    return 0.2126 * color.red() + 0.7152 * color.green() + 0.0722 * color.blue();
 }
 
 
@@ -180,9 +181,9 @@ export function luminance(color) {
  * @returns {Number}
  */
 export function contrast(back, front) {
-    const backLum = luminance(back) + 0.5
-    const foreLum = luminance(front) + 0.5
-    return Math.max(backLum, foreLum) / Math.min(backLum, foreLum)
+    const backLum = luminance(back) + 0.5;
+    const foreLum = luminance(front) + 0.5;
+    return Math.max(backLum, foreLum) / Math.min(backLum, foreLum);
 }
 
 
@@ -194,15 +195,15 @@ export function contrast(back, front) {
  * @returns
  */
 export function colorTone(color) {
-    const minimumContrast = 3.1
+    const minimumContrast = 3.1;
 
-    const lightContrast = contrast(color, MSColor.whiteColor())
-    const darkContrast = contrast(color, MSColor.blackColor())
+    const lightContrast = contrast(color, MSColor.whiteColor());
+    const darkContrast = contrast(color, MSColor.blackColor());
 
     if (lightContrast < minimumContrast && darkContrast > lightContrast) {
-        return "light"
+        return "light";
     } else {
-        return "dark"
+        return "dark";
     }
 }
 
@@ -227,23 +228,23 @@ export function getColor_fromLayer(layer) {
  */
 export function initSharedStyle_fromLayer(layer) {
     if (layer.style().type() != 2) {
-        return document.showMessage("这都不是样式")
+        return document.showMessage("这都不是样式");
     }
     if (layer.style().hasTextStyle) {
-        return MSSharedStyle.alloc().initWithName_firstInstance(layer.name(), layer.style())
+        return MSSharedStyle.alloc().initWithName_firstInstance(layer.name(), layer.style());
     } else {
-        return MSSharedStyle.alloc().initWithName_firstInstance(layer.name(), layer.style())
+        return MSSharedStyle.alloc().initWithName_firstInstance(layer.name(), layer.style());
     }
 }
 
 export function addSharedStyle_fromLayer(style) {
     if (style.type() != 3) {
-        return document.showMessage("需要的是 MSSharedStyle")
+        return document.showMessage("需要的是 MSSharedStyle");
     }
     if (style.value().hasTextStyle) {
-        textStylesContainer.addSharedObject(style)
+        textStylesContainer.addSharedObject(style);
     } else {
-        stylesContainer.addSharedObject(style)
+        stylesContainer.addSharedObject(style);
     }
 }
 
@@ -272,8 +273,8 @@ export function getRGB_fromHEX(hex) {
  * @returns
  */
 export function newMSColor_fromHEX(hex) {
-    var color = getRGB_fromHEX(hex)
-    return MSColor.colorWithRed_green_blue_alpha(color.red / 255, color.green / 255, color.blue / 255, 1)
+    var color = getRGB_fromHEX(hex);
+    return MSColor.colorWithRed_green_blue_alpha(color.red / 255, color.green / 255, color.blue / 255, 1);
 }
 
 /**
@@ -284,19 +285,19 @@ export function newMSColor_fromHEX(hex) {
  * @returns
  */
 export function updateSharedStyle_fromLayer(layer) {
-    const sharedID = layer.style().sharedObjectID()
+    const sharedID = layer.style().sharedObjectID();
     if (layer instanceof MSTextLayer) {
-        const textSharedObject = getTextSharedStyle_byID(sharedID)
+        const textSharedObject = getTextSharedStyle_byID(sharedID);
         if (textSharedObject.isOutOfSyncWithInstance(layer)) {
-            return textSharedObject.updateToMatch(layer.style())
+            return textSharedObject.updateToMatch(layer.style());
         }
     } else if (layer instanceof MSShapeGroup) {
-        const sharedObject = getSharedStyle_byID(sharedID)
+        const sharedObject = getSharedStyle_byID(sharedID);
         if (sharedObject.isOutOfSyncWithInstance(layer)) {
-            sharedObject.updateToMatch(layer.style())
+            sharedObject.updateToMatch(layer.style());
         }
     } else {
-        return document.showMessage("Wrong Layer.")
+        return document.showMessage("Wrong Layer.");
     }
 }
 
@@ -309,9 +310,9 @@ export function updateSharedStyle_fromLayer(layer) {
  */
 export function isLayerExist(name) {
     if (getLayer_byName(name)) {
-        return true
+        return true;
     } else {
-        return false
+        return false;
     }
 }
 
@@ -324,9 +325,9 @@ export function isLayerExist(name) {
  */
 export function isSharedTextStyleExist(name) {
     if (getTextSharedStyle_byName(name)) {
-        return true
+        return true;
     } else {
-        return false
+        return false;
     }
 }
 
@@ -339,8 +340,30 @@ export function isSharedTextStyleExist(name) {
  */
 export function hasSharedStyle(layer) {
     if (layer.style().sharedObjectID()) {
-        return true
+        return true;
     } else {
-        return false
+        return false;
     }
+}
+
+
+/**
+ *
+ *
+ * @export 获取图层组中所有图形图层
+ * @param {Object} layerGroup - 图层组
+ * @returns {Array} 包含图层组中所有图形图层的列表
+ */
+export function getAllShapeLayers(layerGroup) {
+    // console.log(typeof(layerGroup))
+    var layerList = [];
+    var layers = layerGroup.layers();
+    layers.forEach(function(layer) {
+        if (layer instanceof MSShapeGroup) {
+            layerList.push(layer);
+        } else if (layer.containsMultipleLayers()) {
+            layerList = layerList.concat(getAllShapeLayers(layer));
+        }
+    })
+    return layerList;
 }

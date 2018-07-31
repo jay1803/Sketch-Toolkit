@@ -1,11 +1,10 @@
-import { getHex_fromLayer, getColor_fromLayer, colorTone, addTextLayer } from '../functions';
+import { getHex_fromLayer, getColor_fromLayer, colorTone, addTextLayer, getAllShapeLayers } from '../functions';
 
 const sketch = require('sketch')
 
-function generateColorValue_fromLayer(parent, layer) {
-
-    if (layer.defaultName() != 'Rectangle') {
-        return 'not shape'
+function generateColorValue_fromLayer(layer) {
+    if (!(layer instanceof MSShapeGroup)) {
+        return false
     }
     const colorValue = getHex_fromLayer(layer)
     const frameX = layer.frame().x()
@@ -29,21 +28,14 @@ function generateColorValue_fromLayer(parent, layer) {
         'textValue': '#' + colorValue
     }
 
-    return addTextLayer(parent, newText)
+    return addTextLayer(layer.parentForInsertingLayers(), newText)
 }
 
 export function on_color_value(context) {
     const document = context.document
     const page = document.currentPage()
-    var layers = page.layers()
-    if (layers[0].defaultName() === sketch.Types.Artboard) {
-        layers = page.layers[0].layers()
-    }
-
-    for (let i = 0; i < layers.length; i++) {
-        const layer = layers[i];
-        if (layer.defaultName() == 'Rectangle') {
-            generateColorValue_fromLayer(page, layer)
-        }
-    }
+    var layerList = getAllShapeLayers(page)
+    layerList.forEach(function(layer) {
+        generateColorValue_fromLayer(layer)
+    })
 }
