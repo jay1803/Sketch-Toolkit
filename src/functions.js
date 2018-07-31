@@ -237,7 +237,15 @@ export function initSharedStyle_fromLayer(layer) {
     }
 }
 
-export function addSharedStyle_fromLayer(style) {
+
+/**
+ * 将一个 Style 样式添加到 SharedStyle 当中
+ *
+ * @export 
+ * @param {Object} style - 图层样式，可以是文字样式或图形样式
+ * @returns 一个共享样式
+ */
+export function addSharedStyle_fromStyle(style) {
     if (style.type() != 3) {
         return document.showMessage("需要的是 MSSharedStyle");
     }
@@ -246,35 +254,6 @@ export function addSharedStyle_fromLayer(style) {
     } else {
         stylesContainer.addSharedObject(style);
     }
-}
-
-/**
- *
- *
- * @export 将HEX转换为RGB数值
- * @param {String} hex - 颜色 HEX 数值
- * @returns
- */
-export function getRGB_fromHEX(hex) {
-    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    return result ? {
-        red: parseInt(result[1], 16),
-        green: parseInt(result[2], 16),
-        blue: parseInt(result[3], 16)
-    } : null;
-}
-
-
-/**
- *
- *
- * @export 以HEX数值生成MSColor
- * @param {*} hex
- * @returns
- */
-export function newMSColor_fromHEX(hex) {
-    var color = getRGB_fromHEX(hex);
-    return MSColor.colorWithRed_green_blue_alpha(color.red / 255, color.green / 255, color.blue / 255, 1);
 }
 
 /**
