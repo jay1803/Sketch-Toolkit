@@ -1,7 +1,5 @@
 import { getHex_fromLayer, getColor_fromLayer, colorTone, addTextLayer, getAllShapeLayers } from '../functions';
 
-const sketch = require('sketch')
-
 function generateColorValue_fromLayer(layer) {
     if (!(layer instanceof MSShapeGroup)) {
         return false

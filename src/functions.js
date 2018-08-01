@@ -62,8 +62,8 @@ export function getSharedStyle_byID(id) {
  *
  *
  * @export 根据某个属性之找到某个对象
- * @param {String} object
- * @param {String} property
+ * @param {String} object - layer, textSharedStyle, sharedStyle, layerList
+ * @param {String} property - id, name
  * @param {String} value
  * @returns
  */
@@ -81,6 +81,8 @@ export function getObjectBy(object, property, value) {
     }
     switch (object) {
         case 'layer':
+            return currentPage.children().filteredArrayUsingPredicate(predicate).firstObject();
+        case 'layerList':
             return currentPage.children().filteredArrayUsingPredicate(predicate);
         case 'textSharedStyle':
             return textStylesContainer.objects().filteredArrayUsingPredicate(predicate).firstObject();
@@ -134,7 +136,7 @@ export function addTextLayer(layerGroup, text) {
     layer.frame().setX(text.positionX);
     layer.frame().setY(text.positionY);
 
-    return layer
+    return layer;
 }
 
 
@@ -157,6 +159,7 @@ export function getHex_fromLayer(layer) {
     const color = layer.style().fills()[0].color();
     return getHex_fromMSColor(color);
 }
+
 
 // 计算颜色的明亮程度，公式来自 Material Design Web Components
 // 参考：https://github.com/material-components/material-components-web/blob/master/packages/mdc-theme/_functions.scss
@@ -207,6 +210,7 @@ export function colorTone(color) {
     }
 }
 
+
 /**
  *
  *
@@ -215,7 +219,7 @@ export function colorTone(color) {
  * @returns {Object} MSColor
  */
 export function getColor_fromLayer(layer) {
-    return layer.style().fills()[0].color()
+    return layer.style().fills()[0].color();
 }
 
 
@@ -256,6 +260,7 @@ export function addSharedStyle_fromStyle(style) {
     }
 }
 
+
 /**
  *
  *
@@ -280,6 +285,7 @@ export function updateSharedStyle_fromLayer(layer) {
     }
 }
 
+
 /**
  *
  *
@@ -294,6 +300,7 @@ export function isLayerExist(name) {
         return false;
     }
 }
+
 
 /**
  *
@@ -343,6 +350,6 @@ export function getAllShapeLayers(layerGroup) {
         } else if (layer.containsMultipleLayers()) {
             layerList = layerList.concat(getAllShapeLayers(layer));
         }
-    })
+    });
     return layerList;
 }

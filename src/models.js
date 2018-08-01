@@ -91,3 +91,40 @@ export function newTextStyle(NSColor, NSFont) {
     style.setTextStyle_(textStyle);
     return style;
 }
+
+
+/**
+ * 获取图层的某个属性
+ *
+ * @export
+ * @param {Object} layer - MSLayer 对象
+ * @param {String} attr - id, name, locked, visiable, opacity, x, y, width, height
+ * @returns
+ */
+export function getLayerAttr(layer, attr) {
+    if (!(layer instanceof MSShapeGroup)) {
+        return false;
+    }
+    switch (attr) {
+        case "id":
+            return layer.objectID();
+        case "name":
+            return layer.name();
+        case "locked":
+            return layer.isLocked();
+        case "visiable":
+            return layer.isVisiable();
+        case "opacity":
+            return layer.style().fills()[0].interfaceOpacity() * 100;
+        case "x":
+            return layer.frame().x();
+        case "y":
+            return layer.frame().y();
+        case "width":
+            return layer.frame().width();
+        case "height":
+            return layer.frame().height();
+        default:
+            break;
+    }
+}
