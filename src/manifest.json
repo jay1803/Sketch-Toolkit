@@ -28,7 +28,7 @@
 		},
 		{
 			"name": "标注颜色色值",
-			"identifier": "mark_color_value",
+			"identifier": "mark_layer_color_value",
 			"script": "./mark/mark_layer.js",
 			"handler": "mark_layer_color_value",
 			"shortcut": ""
