@@ -1,5 +1,5 @@
-import { newTextLayer, getShapeAttr, newMSColor_fromHEX, getTextAttr } from "../models";
-import { getColor_fromLayer, colorTone, getHex_fromLayer, autoTextColor } from "../functions";
+import { newTextLayer, getShapeAttr, getTextAttr } from "../models";
+import { getHex_fromLayer, autoTextColor } from "../functions";
 
 function newText(layerName, textContent, layer) {
     return {
@@ -47,7 +47,7 @@ export function on_layer_opacity(context) {
             return false;
         }
 
-        var textLayer = newTextLayer(newText("name", getShapeAttr(layer, "opacity").toString(10)), layer);
+        var textLayer = newTextLayer(newText("name", getShapeAttr(layer, "opacity").toString(10), layer));
         layer.parentForInsertingLayers().addLayer(textLayer);
         textLayer.setTextAlignment(1);
         textLayer.frame().setX(getShapeAttr(layer, "x") + getShapeAttr(layer, "width") - getTextAttr(textLayer, "width") - 10);
@@ -68,7 +68,7 @@ export function on_color_value(context) {
             return false;
         }
 
-        var textLayer = newTextLayer(newText("color_value", '#' + getHex_fromLayer(layer)), layer);
+        var textLayer = newTextLayer(newText("color_value", '#' + getHex_fromLayer(layer), layer));
         layer.parentForInsertingLayers().addLayer(textLayer);
         textLayer.setTextAlignment(1);
         textLayer.frame().setX(getShapeAttr(layer, "x") + getShapeAttr(layer, "width") - getTextAttr(textLayer, "width") - 10);

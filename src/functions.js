@@ -171,7 +171,7 @@ export function getHex_fromLayer(layer) {
  * @returns {Number}
  */
 export function luminance(color) {
-    return 0.2126 * color.red() + 0.7152 * color.green() + 0.0722 * color.blue();
+    return 0.2126 * color.red() * color.alpha() + 0.7152 * color.green() * color.alpha() + 0.0722 * color.blue() * color.alpha();
 }
 
 
