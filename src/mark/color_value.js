@@ -1,4 +1,4 @@
-import { getHex_fromLayer, getColor_fromLayer, colorTone, addTextLayer, getAllShapeLayers } from '../functions';
+import {getColor_fromLayer, colorTone, addTextLayer, getAllShapeLayers, getHex_fromLayer } from '../functions';
 
 function generateColorValue_fromLayer(layer) {
     if (!(layer instanceof MSShapeGroup)) {
@@ -12,6 +12,15 @@ function generateColorValue_fromLayer(layer) {
     var textColor = MSColor.blackColor()
     if (colorTone(getColor_fromLayer(layer)) == 'dark') {
         textColor = MSColor.whiteColor()
+    }
+
+    var text = {
+        "layerName": "name",
+        "content": content,
+        "fontSize": 14,
+        "lineHeight": 20,
+        "color": newMSColor_fromHEX("#000000"),
+        "fontName": "Menlo-Regular"
     }
 
     var newText = {
@@ -33,7 +42,7 @@ export function on_color_value(context) {
     const document = context.document
     const page = document.currentPage()
     var layerList = getAllShapeLayers(page)
-    layerList.forEach(function(layer) {
+    layerList.forEach(layer => {
         generateColorValue_fromLayer(layer)
-    })
+    });
 }

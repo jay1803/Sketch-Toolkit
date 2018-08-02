@@ -6,6 +6,13 @@
 	"version": "0.1.1",
 	"commands": [
 		{
+			"name": "新建文本图层",
+			"identifier": "test_new_text_layer",
+			"script": "./test.js",
+			"handler": "on_test_new_text_layer",
+			"shortcut": ""
+		},
+		{
 			"name": "选择同名的图层",
 			"identifier": "select_same_name_layers",
 			"script": "./selection/select_same_name_layers.js",
@@ -13,9 +20,9 @@
 			"shortcut": ""
 		},
 		{
-			"name": "生成颜色色值",
-			"identifier": "generate_color_value",
-			"script": "./generator/color_value.js",
+			"name": "标注颜色色值",
+			"identifier": "mark_color_value",
+			"script": "./mark/mark_layer.js",
 			"handler": "on_color_value",
 			"shortcut": ""
 		},
@@ -24,6 +31,20 @@
 			"identifier": "generate_typography_scale",
 			"script": "./generator/typography_scale.js",
 			"handler": "on_typography_scale",
+			"shortcut": ""
+		},
+		{
+			"name": "标注选中图层名称",
+			"identifier": "mark_layer_name",
+			"script": "./mark/mark_layer.js",
+			"handler": "on_layer_name",
+			"shortcut": ""
+		},
+		{
+			"name": "标注选中图层透明度",
+			"identifier": "mark_layer_opacity",
+			"script": "./mark/mark_layer.js",
+			"handler": "on_layer_opacity",
 			"shortcut": ""
 		}
 	],
@@ -35,7 +56,15 @@
 			},
 			{
 				"title": "生成器",
-				"items": ["generate_color_value", "generate_typography_scale"]
+				"items": ["generate_typography_scale"]
+			},
+			{
+				"title": "标注",
+				"items": ["mark_color_value", "mark_layer_name", "mark_layer_opacity"]
+			},
+			{
+				"title": "测试",
+				"items": ["test_new_text_layer"]
 			}
 		]
 	}

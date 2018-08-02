@@ -1,4 +1,5 @@
-import { addTextLayer, newMSColor_fromHEX, initSharedStyle_fromLayer, addSharedStyle_fromStyle, isLayerExist, getLayer_byName, isSharedTextStyleExist, getTextSharedStyle_byName, updateSharedStyle_fromLayer, hasSharedStyle } from '../functions';
+import { addTextLayer, addSharedStyle_fromStyle, isLayerExist, getLayer_byName, isSharedTextStyleExist, updateSharedStyle_fromLayer, hasSharedStyle } from '../functions';
+import { newMSColor_fromHEX, newSharedStyle_fromLayer } from '../models';
 
 const Text = require('sketch/dom').Text
 const Style = require('sketch/dom').Style
@@ -93,7 +94,7 @@ export function on_typography_scale(context) {
                         }
                     } else {
                         layer = addTextLayer(page, newText)
-                        const newStyle = initSharedStyle_fromLayer(layer)
+                        const newStyle = newSharedStyle_fromLayer(layer)
                         addSharedStyle_fromStyle(newStyle)
                     }
                     positionX = layer.frame().x() + layer.frame().width() + 40

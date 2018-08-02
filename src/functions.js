@@ -12,7 +12,8 @@ const document = context.document;
 const data = document.documentData();
 const currentPage = document.currentPage();
 const page = document.selectedPage;
-const selection = document.selectedLayers();
+const selectedLayers = document.selectedLayers();
+const selection = context.selection;
 
 const textStylesContainer = data.layerTextStyles();
 const stylesContainer = data.layerStyles();
@@ -156,8 +157,7 @@ export function getHex_fromMSColor(color) {
  * @returns {String} HEX数值
  */
 export function getHex_fromLayer(layer) {
-    const color = layer.style().fills()[0].color();
-    return getHex_fromMSColor(color);
+    return layer.style().fills()[0].color().immutableModelObject().hexValue();
 }
 
 
@@ -220,25 +220,6 @@ export function colorTone(color) {
  */
 export function getColor_fromLayer(layer) {
     return layer.style().fills()[0].color();
-}
-
-
-/**
- *
- *
- * @export 根据的图层样式添加SharedStyle
- * @param {Object} layer - MSLayer，如果是文本则会添加文本图层，如果是形状则是样式
- * @returns {Object} MSSharedObject
- */
-export function initSharedStyle_fromLayer(layer) {
-    if (layer.style().type() != 2) {
-        return document.showMessage("这都不是样式");
-    }
-    if (layer.style().hasTextStyle) {
-        return MSSharedStyle.alloc().initWithName_firstInstance(layer.name(), layer.style());
-    } else {
-        return MSSharedStyle.alloc().initWithName_firstInstance(layer.name(), layer.style());
-    }
 }
 
 
@@ -341,7 +322,6 @@ export function hasSharedStyle(layer) {
  * @returns {Array} 包含图层组中所有图形图层的列表
  */
 export function getAllShapeLayers(layerGroup) {
-    // console.log(typeof(layerGroup))
     var layerList = [];
     var layers = layerGroup.layers();
     layers.forEach(function(layer) {
@@ -352,4 +332,20 @@ export function getAllShapeLayers(layerGroup) {
         }
     });
     return layerList;
+}
+
+
+/**
+ * 根据图层颜色自动设定文本的颜色，只有白色和黑色
+ *
+ * @export
+ * @param {Object} layer
+ * @returns MSColor
+ */
+export function autoTextColor(layer) {
+    var textColor = MSColor.blackColor()
+    if (colorTone(getColor_fromLayer(layer)) == 'dark') {
+        textColor = MSColor.whiteColor()
+    }
+    return textColor
 }

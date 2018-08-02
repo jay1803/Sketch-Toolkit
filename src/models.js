@@ -7,6 +7,7 @@ const Group = require('sketch/dom').Group;
 const Text = require('sketch/dom').Text;
 const Rectangle = require('sketch/dom').Rectangle;
 
+const sketch = require('sketch');
 const documentDom = require('sketch/dom').getSelectedDocument();
 const document = context.document;
 const data = document.documentData();
@@ -92,16 +93,45 @@ export function newTextStyle(NSColor, NSFont) {
     return style;
 }
 
+/**
+ *
+ *
+ * @export 根据的图层样式添加SharedStyle
+ * @param {Object} layer - MSLayer，如果是文本则会添加文本图层，如果是形状则是样式
+ * @returns {Object} MSSharedObject
+ */
+export function newSharedStyle_fromLayer(layer) {
+    if (layer.style().type() != 2) {
+        return document.showMessage("这都不是样式");
+    }
+    if (layer.style().hasTextStyle) {
+        return MSSharedStyle.alloc().initWithName_firstInstance(layer.name(), layer.style());
+    } else {
+        return MSSharedStyle.alloc().initWithName_firstInstance(layer.name(), layer.style());
+    }
+}
+
 
 /**
  * 获取图层的某个属性
+ * 
+ * id 
+ * name
+ * locked
+ * visiable
+ * opacity
+ * x
+ * y
+ * width
+ * height
+ * index
  *
  * @export
- * @param {Object} layer - MSLayer 对象
- * @param {String} attr - id, name, locked, visiable, opacity, x, y, width, height
+ * @param {Object} layer MSLayer 对象
+ * @param {String} attr 属性名称
  * @returns
  */
-export function getLayerAttr(layer, attr) {
+export function getShapeAttr(layer, attr) {
     if (!(layer instanceof MSShapeGroup)) {
         return false;
     }
@@ -115,7 +145,7 @@ export function getLayerAttr(layer, attr) {
         case "visiable":
             return layer.isVisiable();
         case "opacity":
-            return layer.style().fills()[0].interfaceOpacity() * 100;
+            return (Math.round(layer.style().contextSettings().opacity() * 100)).toString(10) + "%";
         case "x":
             return layer.frame().x();
         case "y":
@@ -124,6 +154,62 @@ export function getLayerAttr(layer, attr) {
             return layer.frame().width();
         case "height":
             return layer.frame().height();
+        case "index":
+            return layer.parentForInsertingLayers().indexOfLayer(layer);
+        default:
+            break;
+    }
+}
+
+
+/**
+ * 生成新的文本图层
+ *
+ * @param {String} layerName 图层名称
+ * @param {String} content 文本内容
+ * @param {Number} fontSize 字号
+ * @param {Number} lineHeight
+ * @param {Object} color MSColor
+ * @param {String} fontName PostscriptName
+ * @param
+ * @returns
+ */
+export function newTextLayer(text) {
+    var newText = MSTextLayer.new();
+    newText.setName(text.layerName);
+    newText.setStringValue(text.content);
+    newText.setFontSize(text.fontSize);
+    newText.setLineHeight(text.lineHeight);
+    newText.setTextColor(text.color);
+    newText.setFontPostscriptName(text.fontName);
+    return newText;
+}
+
+export function getTextAttr(textLayer, attr) {
+    if (!(textLayer instanceof MSTextLayer)) {
+        return false;
+    }
+    switch (attr) {
+        case "id":
+            return textLayer.objectID();
+        case "name":
+            return textLayer.name();
+        case "locked":
+            return textLayer.isLocked();
+        case "visiable":
+            return textLayer.isVisiable();
+        case "opacity":
+            return (Math.round(textLayer.style().contextSettings().opacity() * 100)).toString(10) + "%";
+        case "x":
+            return textLayer.frame().x();
+        case "y":
+            return textLayer.frame().y();
+        case "width":
+            return textLayer.frame().width();
+        case "height":
+            return textLayer.frame().height();
+        case "index":
+            return textLayer.parentForInsertingLayers().indexOfLayer(textLayer);
         default:
             break;
     }
