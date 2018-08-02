@@ -13,17 +13,24 @@
 			"shortcut": ""
 		},
 		{
-			"name": "选择同名的图层",
-			"identifier": "select_same_name_layers",
-			"script": "./selection/select_same_name_layers.js",
-			"handler": "on_same_name_layers",
+			"name": "选择同名的图层[文档]",
+			"identifier": "select_same_name_layers_on_document",
+			"script": "./selection/selection.js",
+			"handler": "select_same_name_layers_on_document",
+			"shortcut": ""
+		},
+		{
+			"name": "选择同名的图层[页面]",
+			"identifier": "select_same_name_layers_on_page",
+			"script": "./selection/selection.js",
+			"handler": "select_same_name_layers_on_page",
 			"shortcut": ""
 		},
 		{
 			"name": "标注颜色色值",
 			"identifier": "mark_color_value",
 			"script": "./mark/mark_layer.js",
-			"handler": "on_color_value",
+			"handler": "mark_layer_color_value",
 			"shortcut": ""
 		},
 		{
@@ -37,14 +44,21 @@
 			"name": "标注选中图层名称",
 			"identifier": "mark_layer_name",
 			"script": "./mark/mark_layer.js",
-			"handler": "on_layer_name",
+			"handler": "mark_layer_name",
 			"shortcut": ""
 		},
 		{
 			"name": "标注选中图层透明度",
 			"identifier": "mark_layer_opacity",
 			"script": "./mark/mark_layer.js",
-			"handler": "on_layer_opacity",
+			"handler": "mark_layer_opacity",
+			"shortcut": ""
+		},
+		{
+			"name": "修改选中图层名称为序号",
+			"identifier": "index_layer_name",
+			"script": "./layerName.js",
+			"handler": "set_layer_index_name",
 			"shortcut": ""
 		}
 	],

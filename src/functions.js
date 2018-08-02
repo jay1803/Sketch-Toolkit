@@ -349,3 +349,14 @@ export function autoTextColor(layer) {
     }
     return textColor;
 }
+
+
+/**
+ * 选中给定的图层
+ *
+ * @export
+ * @param {*} layer
+ */
+export function selectLayer(layer) {
+    layer.select_byExpandingSelection(true, true);
+}
