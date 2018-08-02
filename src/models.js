@@ -111,30 +111,39 @@ export function newSharedStyle_fromLayer(layer) {
     }
 }
 
+/**
+ * 生成新的文本图层
+ *
+ * @param {String} layerName 图层名称
+ * @param {String} content 文本内容
+ * @param {Number} fontSize 字号
+ * @param {Number} lineHeight
+ * @param {Object} color MSColor
+ * @param {String} fontName PostscriptName
+ * @param
+ * @returns
+ */
+export function newTextLayer(text) {
+    var newText = MSTextLayer.new();
+    newText.setName(text.layerName);
+    newText.setStringValue(text.content);
+    newText.setFontSize(text.fontSize);
+    newText.setLineHeight(text.lineHeight);
+    newText.setTextColor(text.color);
+    newText.setFontPostscriptName(text.fontName);
+    return newText;
+}
 
 /**
  * 获取图层的某个属性
- * 
- * id 
- * name
- * locked
- * visiable
- * opacity
- * x
- * y
- * width
- * height
- * index
+ * 通用的属性：id, name, locked, visiable, opacity, x, y, width, height, index
  *
  * @export
  * @param {Object} layer MSLayer 对象
  * @param {String} attr 属性名称
  * @returns
  */
-export function getShapeAttr(layer, attr) {
-    if (!(layer instanceof MSShapeGroup)) {
-        return false;
-    }
+export function getAttribute_fromLayer(attr, layer) {
     switch (attr) {
         case "id":
             return layer.objectID();
@@ -159,58 +168,15 @@ export function getShapeAttr(layer, attr) {
         default:
             break;
     }
-}
-
-
-/**
- * 生成新的文本图层
- *
- * @param {String} layerName 图层名称
- * @param {String} content 文本内容
- * @param {Number} fontSize 字号
- * @param {Number} lineHeight
- * @param {Object} color MSColor
- * @param {String} fontName PostscriptName
- * @param
- * @returns
- */
-export function newTextLayer(text) {
-    var newText = MSTextLayer.new();
-    newText.setName(text.layerName);
-    newText.setStringValue(text.content);
-    newText.setFontSize(text.fontSize);
-    newText.setLineHeight(text.lineHeight);
-    newText.setTextColor(text.color);
-    newText.setFontPostscriptName(text.fontName);
-    return newText;
-}
-
-export function getTextAttr(textLayer, attr) {
-    if (!(textLayer instanceof MSTextLayer)) {
-        return false;
+    if (layer instanceof MSShapeGroup) {
+        switch (attr) {
+            default:
+                break;
+        }
     }
-    switch (attr) {
-        case "id":
-            return textLayer.objectID();
-        case "name":
-            return textLayer.name();
-        case "locked":
-            return textLayer.isLocked();
-        case "visiable":
-            return textLayer.isVisiable();
-        case "opacity":
-            return (Math.round(textLayer.style().contextSettings().opacity() * 100)).toString(10) + "%";
-        case "x":
-            return textLayer.frame().x();
-        case "y":
-            return textLayer.frame().y();
-        case "width":
-            return textLayer.frame().width();
-        case "height":
-            return textLayer.frame().height();
-        case "index":
-            return textLayer.parentForInsertingLayers().indexOfLayer(textLayer);
-        default:
-            break;
+    if (layer instanceof MSTextLayer) {
+        switch (attr) {
+            default: break;
+        }
     }
 }

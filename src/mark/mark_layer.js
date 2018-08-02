@@ -1,4 +1,4 @@
-import { newTextLayer, getShapeAttr, getTextAttr } from "../models";
+import { newTextLayer, getShapeAttr, getTextAttr, getAttribute_fromLayer } from "../models";
 import { getHex_fromLayer, autoTextColor } from "../functions";
 
 function newText(layerName, textContent, layer) {
@@ -22,8 +22,8 @@ export function mark_layer_name(context) {
     selection.forEach(layer => {
         var textLayer = newTextLayer(newText("name", layer.name(), layer));
         layer.parentForInsertingLayers().addLayer(textLayer);
-        textLayer.frame().setX(getShapeAttr(layer, "x") + 10);
-        textLayer.frame().setY(getShapeAttr(layer, "y") + (getShapeAttr(layer, "height") - 20) / 2);
+        textLayer.frame().setX(getAttribute_fromLayer("x", layer) + 10);
+        textLayer.frame().setY(getAttribute_fromLayer("y", layer) + (getAttribute_fromLayer("height", layer) - 20) / 2);
     });
 }
 
@@ -39,11 +39,11 @@ export function mark_layer_opacity(context) {
             return false;
         }
 
-        var textLayer = newTextLayer(newText("name", getShapeAttr(layer, "opacity").toString(10), layer));
+        var textLayer = newTextLayer(newText("name", getAttribute_fromLayer("opacity", layer).toString(10), layer));
         layer.parentForInsertingLayers().addLayer(textLayer);
         textLayer.setTextAlignment(1);
-        textLayer.frame().setX(getShapeAttr(layer, "x") + getShapeAttr(layer, "width") - getTextAttr(textLayer, "width") - 10);
-        textLayer.frame().setY(getShapeAttr(layer, "y") + (getShapeAttr(layer, "height") - 20) / 2);
+        textLayer.frame().setX(getAttribute_fromLayer("x", layer) + getAttribute_fromLayer("width", layer) - getAttribute_fromLayer("width", textLayer) - 10);
+        textLayer.frame().setY(getAttribute_fromLayer("y", layer) + (getAttribute_fromLayer("height", layer) - 20) / 2);
     });
 }
 
@@ -63,7 +63,7 @@ export function mark_layer_color_value(context) {
         var textLayer = newTextLayer(newText("color_value", '#' + getHex_fromLayer(layer), layer));
         layer.parentForInsertingLayers().addLayer(textLayer);
         textLayer.setTextAlignment(1);
-        textLayer.frame().setX(getShapeAttr(layer, "x") + getShapeAttr(layer, "width") - getTextAttr(textLayer, "width") - 10);
-        textLayer.frame().setY(getShapeAttr(layer, "y") + (getShapeAttr(layer, "height") - 20) / 2);
+        textLayer.frame().setX(getAttribute_fromLayer("x", layer) + getAttribute_fromLayer("width", layer) - getAttribute_fromLayer("width", textLayer) - 10);
+        textLayer.frame().setY(getAttribute_fromLayer("y", layer) + (getAttribute_fromLayer("height", layer) - 20) / 2);
     });
 }
