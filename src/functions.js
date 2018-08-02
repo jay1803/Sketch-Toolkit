@@ -171,7 +171,7 @@ export function getHex_fromLayer(layer) {
  * @returns {Number}
  */
 export function luminance(color) {
-    return 0.2126 * color.red() * color.alpha() + 0.7152 * color.green() * color.alpha() + 0.0722 * color.blue() * color.alpha();
+    return 0.2126 * (color.red() * color.alpha() + 1) + 0.7152 * (color.green() * color.alpha() + 1) + 0.0722 * (color.blue() * color.alpha() + 1);
 }
 
 
@@ -198,7 +198,7 @@ export function contrast(back, front) {
  * @returns
  */
 export function colorTone(color) {
-    const minimumContrast = 3.1;
+    const minimumContrast = 4.5;
 
     const lightContrast = contrast(color, MSColor.whiteColor());
     const darkContrast = contrast(color, MSColor.blackColor());
@@ -343,9 +343,9 @@ export function getAllShapeLayers(layerGroup) {
  * @returns MSColor
  */
 export function autoTextColor(layer) {
-    var textColor = MSColor.blackColor()
+    var textColor = MSColor.blackColor();
     if (colorTone(getColor_fromLayer(layer)) == 'dark') {
-        textColor = MSColor.whiteColor()
+        textColor = MSColor.whiteColor();
     }
-    return textColor
+    return textColor;
 }
