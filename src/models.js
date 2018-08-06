@@ -143,8 +143,8 @@ export function newTextLayer(text) {
  * @param {String} attr 属性名称
  * @returns
  */
-export function getAttribute_fromLayer(attr, layer) {
-    switch (attr) {
+export function getAttribute_fromLayer(attribute, layer) {
+    switch (attribute) {
         case "id":
             return layer.objectID();
         case "name":
@@ -169,14 +169,55 @@ export function getAttribute_fromLayer(attr, layer) {
             break;
     }
     if (layer instanceof MSShapeGroup) {
-        switch (attr) {
+        switch (attribute) {
             default:
                 break;
         }
     }
     if (layer instanceof MSTextLayer) {
-        switch (attr) {
+        switch (attribute) {
             default: break;
+        }
+    }
+    if (layer instanceof MSSymbolInstance) {
+        switch (attribute) {
+            case "master":
+                return layer.symbolMaster();
+            default:
+                break;
+        }
+    }
+}
+
+export function setAttribute_forLayer(attribute, value, layer) {
+    switch (attribute) {
+        case "name":
+            return layer.setName(value);
+        case "x":
+            return layer.frame().setX(value);
+        case "y":
+            return layer.frame().setY(value);
+        case "width":
+            return layer.frame().setWidth(value);
+        case "height":
+            return layer.frame().setHeight(value);
+        default:
+            break;
+    }
+    if (layer instanceof MSShapeGroup) {
+        switch (attribute) {
+            default: break;
+        }
+    }
+    if (layer instanceof MSTextLayer) {
+        switch (attribute) {
+            default: break;
+        }
+    }
+    if (layer instanceof MSSymbolInstance) {
+        switch (attribute) {
+            default:
+                break;
         }
     }
 }
