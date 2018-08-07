@@ -1,0 +1,110 @@
+{
+  "identifier": "com.sketchapp.maxos",
+  "compatibleVersion": 3,
+  "bundleVersion": 1,
+  "icon": "icon.png",
+  "version": "0.2.0",
+  "commands": [
+    {
+      "name": "新建文本图层",
+      "identifier": "test_new_text_layer",
+      "script": "test.js",
+      "handler": "on_test_new_text_layer",
+      "shortcut": ""
+    },
+    {
+      "name": "新建图形图层",
+      "identifier": "test_new_shape_group",
+      "script": "test.js",
+      "handler": "on_test_new_shape_group",
+      "shortcut": ""
+    },
+    {
+      "name": "选择同名的图层[文档]",
+      "identifier": "select_same_name_layers_on_document",
+      "script": "selection.js",
+      "handler": "select_same_name_layers_on_document",
+      "shortcut": ""
+    },
+    {
+      "name": "选择同名的图层[页面]",
+      "identifier": "select_same_name_layers_on_page",
+      "script": "selection.js",
+      "handler": "select_same_name_layers_on_page",
+      "shortcut": ""
+    },
+    {
+      "name": "标注颜色色值",
+      "identifier": "mark_layer_color_value",
+      "script": "mark_layer.js",
+      "handler": "mark_layer_color_value",
+      "shortcut": ""
+    },
+    {
+      "name": "生成排版规模",
+      "identifier": "generate_typography_scale",
+      "script": "typography_scale.js",
+      "handler": "on_typography_scale",
+      "shortcut": ""
+    },
+    {
+      "name": "标注选中图层名称",
+      "identifier": "mark_layer_name",
+      "script": "mark_layer.js",
+      "handler": "mark_layer_name",
+      "shortcut": ""
+    },
+    {
+      "name": "标注选中图层透明度",
+      "identifier": "mark_layer_opacity",
+      "script": "mark_layer.js",
+      "handler": "mark_layer_opacity",
+      "shortcut": ""
+    },
+    {
+      "name": "修改选中图层名称为序号",
+      "identifier": "index_layer_name",
+      "script": "layerName.js",
+      "handler": "set_layer_index_name",
+      "shortcut": ""
+    }
+  ],
+  "menu": {
+    "title": "Toolkit",
+    "items": [
+      {
+        "title": "选择器",
+        "items": [
+          "select_same_name_layers"
+        ]
+      },
+      {
+        "title": "生成器",
+        "items": [
+          "generate_typography_scale"
+        ]
+      },
+      {
+        "title": "标注",
+        "items": [
+          "mark_layer_color_value",
+          "mark_layer_name",
+          "mark_layer_opacity"
+        ]
+      },
+      {
+        "title": "测试",
+        "items": [
+          "test_new_text_layer",
+          "test_new_shape_group"
+        ]
+      }
+    ]
+  },
+  "description": "a test plugin for Sketch",
+  "name": "sketch-toolkit",
+  "disableCocoaScriptPreprocessor": true,
+  "appcast": "https://raw.githubusercontent.com//master/.appcast.xml",
+  "author": "Max",
+  "authorEmail": "ximy1803@gmail.com"
+}

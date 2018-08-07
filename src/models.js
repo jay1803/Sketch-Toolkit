@@ -134,6 +134,15 @@ export function newTextLayer(text) {
     return newText;
 }
 
+export function newShapeGroup() {
+    var newShape = MSShapeGroup.new();
+    setAttribute_forLayer("x", 0, newShape);
+    setAttribute_forLayer("y", 0, newShape);
+    setAttribute_forLayer("width", 100, newShape);
+    setAttribute_forLayer("height", 100, newShape);
+    return newShape;
+}
+
 /**
  * 获取图层的某个属性
  * 通用的属性：id, name, locked, visiable, opacity, x, y, width, height, index
@@ -201,12 +210,51 @@ export function setAttribute_forLayer(attribute, value, layer) {
             return layer.frame().setWidth(value);
         case "height":
             return layer.frame().setHeight(value);
+        case "resize":
+            switch (value) {
+                case "top":
+                    if (layer.hasFixedEdge('canFixedTop')) {
+                        return layer.setFixed_forEdge(true, 32);
+                    }
+                    return false;
+                case "bottom":
+                    if (layer.hasFixedEdge('canFixedBottom')) {
+                        return layer.setFixed_forEdge(true, 8);
+                    }
+                    return false;
+                case "left":
+                    if (layer.hasFixedEdge('canFixedLeft')) {
+                        return layer.setFixed_forEdge(true, 4);
+                    }
+                    return false;
+                case "right":
+                    if (layer.hasFixedEdge('canFixedRight')) {
+                        return layer.setFixed_forEdge(true, 1);
+                    }
+                    return false;
+                case "width":
+                    if (layer.hasFixedEdge('canFixedWidth')) {
+                        return layer.setFixed_forEdge(true, 2);
+                    }
+                    return false;
+                case "height":
+                    if (layer.hasFixedEdge('canFixedHeight')) {
+                        return layer.setFixed_forEdge(true, 16);
+                    }
+                    return false;
+                case "clear":
+                    return layer.setFixed_forEdge(false, 63);
+            }
+            break;
         default:
             break;
     }
     if (layer instanceof MSShapeGroup) {
         switch (attribute) {
-            default: break;
+            case "backgroundColor":
+                return layer;
+            default: 
+                break;
         }
     }
     if (layer instanceof MSTextLayer) {

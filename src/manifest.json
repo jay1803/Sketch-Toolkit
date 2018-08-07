@@ -1,15 +1,22 @@
 {
-	"identifier": "com.sketchapp.maxoxo.sketch-toolkit",
+	"identifier": "com.sketchapp.maxos",
 	"compatibleVersion": 3,
 	"bundleVersion": 1,
 	"icon": "icon.png",
-	"version": "0.1.1",
+	"version": "0.2.0",
 	"commands": [
 		{
 			"name": "新建文本图层",
 			"identifier": "test_new_text_layer",
 			"script": "./test.js",
 			"handler": "on_test_new_text_layer",
+			"shortcut": ""
+		},
+		{
+			"name": "新建图形图层",
+			"identifier": "test_new_shape_group",
+			"script": "./test.js",
+			"handler": "on_test_new_shape_group",
 			"shortcut": ""
 		},
 		{
@@ -74,11 +81,11 @@
 			},
 			{
 				"title": "标注",
-				"items": ["mark_color_value", "mark_layer_name", "mark_layer_opacity"]
+				"items": ["mark_layer_color_value", "mark_layer_name", "mark_layer_opacity"]
 			},
 			{
 				"title": "测试",
-				"items": ["test_new_text_layer"]
+				"items": ["test_new_text_layer", "test_new_shape_group"]
 			}
 		]
 	}
