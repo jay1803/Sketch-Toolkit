@@ -18,7 +18,20 @@ export function on_test_new_text_layer(context) {
 export function on_test_new_shape_group(context) {
     console.log("STARTING...");
     const document = context.document;
-    var newShape = newShapeGroup();
+    const rect = {
+        x: 0,
+        y: 0,
+        width: 200,
+        height: 200
+    }
+    var newShape = newShapeGroup(rect);
     document.currentPage().addLayer(newShape);
+    var newColor = newMSColor_fromHEX("#000000");
+    
+    console.log(newShape.style().fills());
     console.log(newShape);
+}
+
+export function on_test_set_arrtibutes(context) {
+    return;
 }

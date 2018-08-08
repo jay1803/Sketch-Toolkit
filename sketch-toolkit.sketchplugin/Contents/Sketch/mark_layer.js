@@ -737,13 +737,19 @@ function newTextLayer(text) {
   newText.setFontPostscriptName(text.fontName);
   return newText;
 }
-function newShapeGroup() {
-  var newShape = MSShapeGroup.new();
-  setAttribute_forLayer("x", 0, newShape);
-  setAttribute_forLayer("y", 0, newShape);
-  setAttribute_forLayer("width", 100, newShape);
-  setAttribute_forLayer("height", 100, newShape);
-  return newShape;
+/**
+ *
+ * 初始化一个新的图形图层，
+ * @export
+ * @param {Object} rect var rect = {x: 0, y: 0, width: 100, heigth: 100}
+ * @returns
+ */
+
+function newShapeGroup(rect) {
+  var shapeGroup = MSShapeGroup.alloc().initWithFrame(new Rectangle(rect.x, rect.y, rect.width, rect.height).asCGRect());
+  var rectangle = MSRectangleShape.alloc().initWithFrame(CGRectMake(0, 0, rect.width, rect.height));
+  shapeGroup.addLayer(rectangle);
+  return shapeGroup;
 }
 /**
  * 获取图层的某个属性

@@ -17,10 +17,12 @@
     "build": "skpm-build",
     "watch": "skpm-build --watch",
     "start": "skpm-build --watch --run",
-    "postinstall": "npm run build && skpm-link"
+    "postinstall": "npm run build && skpm-link",
+    "test": "mocha"
   },
   "devDependencies": {
-    "@skpm/builder": "^0.5.2"
+    "@skpm/builder": "^0.5.2",
+    "eslint-config-sketch": "^0.2.4"
   },
   "author": "Max <ximy1803@gmail.com>",
   "dependencies": {
