@@ -440,7 +440,7 @@ function setAttribute_forLayer(attribute, value, layer) {
 
   if (layer instanceof MSShapeGroup) {
     switch (attribute) {
-      case "backgroundColor":
+      case "color":
         layer.style().removeAllStyleFills();
         layer.style().addStylePartOfType(0).color = value;
         return true;
@@ -529,7 +529,7 @@ function on_test_new_shape_group(context) {
   var newColorTwo = Object(_models__WEBPACK_IMPORTED_MODULE_0__["newColorFromString"])("#FF0000");
   var newShape = Object(_models__WEBPACK_IMPORTED_MODULE_0__["newShapeGroup"])(rect);
   document.currentPage().addLayer(newShape);
-  Object(_models__WEBPACK_IMPORTED_MODULE_0__["setAttribute_forLayer"])("backgroundColor", newColorTwo, newShape);
+  Object(_models__WEBPACK_IMPORTED_MODULE_0__["setAttribute_forLayer"])("color", newColorTwo, newShape);
 }
 function on_test_set_resizing(context) {
   var document = context.document;

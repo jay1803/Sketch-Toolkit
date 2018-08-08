@@ -27,7 +27,7 @@ export function on_test_new_shape_group(context) {
     var newColorTwo = newColorFromString("#FF0000");
     var newShape = newShapeGroup(rect);
     document.currentPage().addLayer(newShape);
-    setAttribute_forLayer("backgroundColor", newColorTwo, newShape);
+    setAttribute_forLayer("color", newColorTwo, newShape);
 }
 
 export function on_test_set_resizing(context) {

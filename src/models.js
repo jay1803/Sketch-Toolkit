@@ -284,7 +284,7 @@ export function setAttribute_forLayer(attribute, value, layer) {
     }
     if (layer instanceof MSShapeGroup) {
         switch (attribute) {
-            case "backgroundColor":
+            case "color":
                 layer.style().removeAllStyleFills();
                 layer.style().addStylePartOfType(0).color = value;
                 return true;
