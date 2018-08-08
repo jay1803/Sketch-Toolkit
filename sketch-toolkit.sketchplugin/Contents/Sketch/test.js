@@ -95,7 +95,7 @@ var exports =
 /*!***********************!*\
   !*** ./src/models.js ***!
   \***********************/
-/*! exports provided: newFont, newColorWithRGBA, getRGB_fromHEX, newMSColor_fromHEX, newTextStyle, newSharedStyle_fromLayer, newTextLayer, newShapeGroup, getAttribute_fromLayer, setAttribute_forLayer */
+/*! exports provided: newFont, newColorWithRGBA, getRGB_fromHEX, newMSColor_fromHEX, newMSColorFromString, newTextStyle, newSharedStyle_fromLayer, newTextLayer, newShapeGroup, getAttribute_fromLayer, setAttribute_forLayer */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -104,6 +104,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "newColorWithRGBA", function() { return newColorWithRGBA; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getRGB_fromHEX", function() { return getRGB_fromHEX; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "newMSColor_fromHEX", function() { return newMSColor_fromHEX; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "newMSColorFromString", function() { return newMSColorFromString; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "newTextStyle", function() { return newTextStyle; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "newSharedStyle_fromLayer", function() { return newSharedStyle_fromLayer; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "newTextLayer", function() { return newTextLayer; });
@@ -181,7 +182,6 @@ function getRGB_fromHEX(hex) {
 }
 /**
  *
- *
  * @export 以HEX数值生成MSColor
  * @param {*} hex
  * @returns
@@ -190,6 +190,35 @@ function getRGB_fromHEX(hex) {
 function newMSColor_fromHEX(hex) {
   var color = getRGB_fromHEX(hex);
   return MSColor.colorWithRed_green_blue_alpha(color.red / 255, color.green / 255, color.blue / 255, 1);
+}
+/**
+ * // Hex
+ * MSColorFromString("#33AE15")
+ * MSColorFromString("#333")
+ * MSColorFromString("#145515FF")
+ *
+ * // rgb/rgba
+ * MSColorFromString("rgb(255,0,0)")
+ * MSColorFromString("rgba(255,0,0,0.5)")
+ *
+ * // Color keywords
+ * MSColorFromString("red")
+ * MSColorFromString("blue")
+ * MSColorFromString("magenta")
+ * MSColorFromString("darkviolet")
+ *
+ * // hls
+ * MSColorFromString("hsl(270, 60%, 50%, .15)")
+ * MSColorFromString("hsl(270deg, 60%, 70%)")
+ * MSColorFromString("hsl(4.71239rad, 60%, 70%)")
+ * MSColorFromString("hsla(240, 100%, 50%, .4)")
+ * @export
+ * @param {*} color
+ * @returns
+ */
+
+function newMSColorFromString(color) {
+  return MSImmutableColor.colorWithSVGString(color).newMutableCounterpart();
 }
 /**
  *
@@ -259,10 +288,11 @@ function newTextLayer(text) {
  * @returns
  */
 
-function newShapeGroup(rect) {
-  var shapeGroup = MSShapeGroup.alloc().initWithFrame(new Rectangle(rect.x, rect.y, rect.width, rect.height).asCGRect());
+function newShapeGroup(rect, color) {
   var rectangle = MSRectangleShape.alloc().initWithFrame(CGRectMake(0, 0, rect.width, rect.height));
-  shapeGroup.addLayer(rectangle);
+  var shapeGroup = MSShapeGroup.shapeWithPath(rectangle);
+  var fill = shapeGroup.style().addStylePartOfType(0);
+  fill.color = color;
   return shapeGroup;
 }
 /**
@@ -470,10 +500,9 @@ function on_test_new_shape_group(context) {
     width: 200,
     height: 200
   };
-  var newShape = Object(_models__WEBPACK_IMPORTED_MODULE_0__["newShapeGroup"])(rect);
-  document.currentPage().addLayer(newShape);
   var newColor = Object(_models__WEBPACK_IMPORTED_MODULE_0__["newMSColor_fromHEX"])("#000000");
-  console.log(newShape.style().fills());
+  var newShape = Object(_models__WEBPACK_IMPORTED_MODULE_0__["newShapeGroup"])(rect, newColor);
+  document.currentPage().addLayer(newShape);
   console.log(newShape);
 }
 function on_test_set_arrtibutes(context) {

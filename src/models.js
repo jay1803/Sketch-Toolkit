@@ -65,7 +65,6 @@ export function getRGB_fromHEX(hex) {
 
 /**
  *
- *
  * @export 以HEX数值生成MSColor
  * @param {*} hex
  * @returns
@@ -73,6 +72,36 @@ export function getRGB_fromHEX(hex) {
 export function newMSColor_fromHEX(hex) {
     var color = getRGB_fromHEX(hex);
     return MSColor.colorWithRed_green_blue_alpha(color.red / 255, color.green / 255, color.blue / 255, 1);
+}
+
+
+/**
+ * // Hex
+ * MSColorFromString("#33AE15")
+ * MSColorFromString("#333")
+ * MSColorFromString("#145515FF")
+ *
+ * // rgb/rgba
+ * MSColorFromString("rgb(255,0,0)")
+ * MSColorFromString("rgba(255,0,0,0.5)")
+ *
+ * // Color keywords
+ * MSColorFromString("red")
+ * MSColorFromString("blue")
+ * MSColorFromString("magenta")
+ * MSColorFromString("darkviolet")
+ *
+ * // hls
+ * MSColorFromString("hsl(270, 60%, 50%, .15)")
+ * MSColorFromString("hsl(270deg, 60%, 70%)")
+ * MSColorFromString("hsl(4.71239rad, 60%, 70%)")
+ * MSColorFromString("hsla(240, 100%, 50%, .4)")
+ * @export
+ * @param {*} color
+ * @returns
+ */
+export function newMSColorFromString(color) {
+    return MSImmutableColor.colorWithSVGString(color).newMutableCounterpart();
 }
 
 /**
@@ -142,14 +171,13 @@ export function newTextLayer(text) {
  * @param {Object} rect var rect = {x: 0, y: 0, width: 100, heigth: 100}
  * @returns
  */
-export function newShapeGroup(rect) {
-    const shapeGroup = MSShapeGroup.alloc().initWithFrame(
-        new Rectangle(rect.x, rect.y, rect.width, rect.height).asCGRect()
-    );
+export function newShapeGroup(rect, color) {
     const rectangle = MSRectangleShape.alloc().initWithFrame(
         CGRectMake(0, 0, rect.width, rect.height)
     );
-    shapeGroup.addLayer(rectangle);
+    const shapeGroup = MSShapeGroup.shapeWithPath(rectangle);
+    const fill = shapeGroup.style().addStylePartOfType(0);
+    fill.color = color;
     return shapeGroup;
 }
 

@@ -23,12 +23,11 @@ export function on_test_new_shape_group(context) {
         y: 0,
         width: 200,
         height: 200
-    }
-    var newShape = newShapeGroup(rect);
-    document.currentPage().addLayer(newShape);
+    };
     var newColor = newMSColor_fromHEX("#000000");
+    var newShape = newShapeGroup(rect, newColor);
+    document.currentPage().addLayer(newShape);
     
-    console.log(newShape.style().fills());
     console.log(newShape);
 }
 
