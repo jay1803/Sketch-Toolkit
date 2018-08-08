@@ -384,7 +384,7 @@ function setAttribute_forLayer(attribute, value, layer) {
     case "height":
       return layer.frame().setHeight(value);
 
-    case "resize":
+    case "resizing":
       switch (value) {
         case "top":
           if (layer.hasFixedEdge('canFixedTop')) {
@@ -527,7 +527,7 @@ function on_test_new_shape_group(context) {
   };
   var newColor = Object(_models__WEBPACK_IMPORTED_MODULE_0__["newColorFromString"])("#000000");
   var newColorTwo = Object(_models__WEBPACK_IMPORTED_MODULE_0__["newColorFromString"])("#FF0000");
-  var newShape = Object(_models__WEBPACK_IMPORTED_MODULE_0__["newShapeGroup"])(rect, newColor);
+  var newShape = Object(_models__WEBPACK_IMPORTED_MODULE_0__["newShapeGroup"])(rect);
   document.currentPage().addLayer(newShape);
   Object(_models__WEBPACK_IMPORTED_MODULE_0__["setAttribute_forLayer"])("backgroundColor", newColorTwo, newShape);
 }
@@ -539,10 +539,11 @@ function on_test_set_resizing(context) {
     width: 200,
     height: 200
   };
-  var newColor = Object(_models__WEBPACK_IMPORTED_MODULE_0__["newColorFromString"])("#000000");
-  var newShape = Object(_models__WEBPACK_IMPORTED_MODULE_0__["newShapeGroup"])(rect, newColor);
-  document.currentPage().addLayer(newShape);
-  Object(_models__WEBPACK_IMPORTED_MODULE_0__["setAttribute_forLayer"])("resizing", "top", newShape);
+  var artboard = Object(_models__WEBPACK_IMPORTED_MODULE_0__["newArtboard"])(rect);
+  document.currentPage().addLayer(artboard);
+  var layer = Object(_models__WEBPACK_IMPORTED_MODULE_0__["newShapeGroup"])(rect);
+  artboard.addLayer(layer);
+  Object(_models__WEBPACK_IMPORTED_MODULE_0__["setAttribute_forLayer"])("resizing", "top", layer);
 }
 function on_test_new_artboard(context) {
   var document = context.document;
@@ -552,7 +553,7 @@ function on_test_new_artboard(context) {
     width: 200,
     height: 200
   };
-  var artboard = Object(_models__WEBPACK_IMPORTED_MODULE_0__["newArtboard"])();
+  var artboard = Object(_models__WEBPACK_IMPORTED_MODULE_0__["newArtboard"])(rect);
   document.currentPage().addLayer(artboard);
 }
 

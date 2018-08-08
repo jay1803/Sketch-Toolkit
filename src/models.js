@@ -243,7 +243,7 @@ export function setAttribute_forLayer(attribute, value, layer) {
             return layer.frame().setWidth(value);
         case "height":
             return layer.frame().setHeight(value);
-        case "resize":
+        case "resizing":
             switch (value) {
                 case "top":
                     if (layer.hasFixedEdge('canFixedTop')) {

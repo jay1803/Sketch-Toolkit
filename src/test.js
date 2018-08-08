@@ -25,7 +25,7 @@ export function on_test_new_shape_group(context) {
     };
     var newColor = newColorFromString("#000000");
     var newColorTwo = newColorFromString("#FF0000");
-    var newShape = newShapeGroup(rect, newColor);
+    var newShape = newShapeGroup(rect);
     document.currentPage().addLayer(newShape);
     setAttribute_forLayer("backgroundColor", newColorTwo, newShape);
 }
@@ -38,10 +38,11 @@ export function on_test_set_resizing(context) {
         width: 200,
         height: 200
     };
-    var newColor = newColorFromString("#000000");
-    var newShape = newShapeGroup(rect, newColor);
-    document.currentPage().addLayer(newShape);
-    setAttribute_forLayer("resizing", "top", newShape);
+    var artboard = newArtboard(rect);
+    document.currentPage().addLayer(artboard);
+    var layer = newShapeGroup(rect);
+    artboard.addLayer(layer);
+    setAttribute_forLayer("resizing", "top", layer);
 }
 
 export function on_test_new_artboard(context) {
@@ -52,6 +53,6 @@ export function on_test_new_artboard(context) {
         width: 200,
         height: 200
     };
-    var artboard = newArtboard();
+    var artboard = newArtboard(rect);
     document.currentPage().addLayer(artboard);
 }
