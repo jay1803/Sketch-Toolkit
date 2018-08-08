@@ -95,16 +95,14 @@ var exports =
 /*!***********************!*\
   !*** ./src/models.js ***!
   \***********************/
-/*! exports provided: newFont, newColorWithRGBA, getRGB_fromHEX, newMSColor_fromHEX, newMSColorFromString, newTextStyle, newSharedStyle_fromLayer, newTextLayer, newShapeGroup, getAttribute_fromLayer, setAttribute_forLayer */
+/*! exports provided: newFont, getRGB_fromHEX, newColorFromString, newTextStyle, newSharedStyle_fromLayer, newTextLayer, newShapeGroup, getAttribute_fromLayer, setAttribute_forLayer */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "newFont", function() { return newFont; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "newColorWithRGBA", function() { return newColorWithRGBA; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getRGB_fromHEX", function() { return getRGB_fromHEX; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "newMSColor_fromHEX", function() { return newMSColor_fromHEX; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "newMSColorFromString", function() { return newMSColorFromString; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "newColorFromString", function() { return newColorFromString; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "newTextStyle", function() { return newTextStyle; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "newSharedStyle_fromLayer", function() { return newSharedStyle_fromLayer; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "newTextLayer", function() { return newTextLayer; });
@@ -151,20 +149,6 @@ function newFont(fontName, fontSize) {
   return NSFont.fontWithName_size_(fontName, fontSize);
 }
 /**
- * 根据 RGB 和 不透明度 来生成 MSColor 对象
- *
- * @export
- * @param {Number} red
- * @param {Number} green
- * @param {Number} blue
- * @param {Number} opacity
- * @returns MSColor
- */
-
-function newColorWithRGBA(red, green, blue, opacity) {
-  return MSColor.colorWithRed_green_blue_alpha(red / 255, green / 255, blue / 255, opacity);
-}
-/**
  *
  *
  * @export 将HEX转换为RGB数值
@@ -179,17 +163,6 @@ function getRGB_fromHEX(hex) {
     green: parseInt(result[2], 16),
     blue: parseInt(result[3], 16)
   } : null;
-}
-/**
- *
- * @export 以HEX数值生成MSColor
- * @param {*} hex
- * @returns
- */
-
-function newMSColor_fromHEX(hex) {
-  var color = getRGB_fromHEX(hex);
-  return MSColor.colorWithRed_green_blue_alpha(color.red / 255, color.green / 255, color.blue / 255, 1);
 }
 /**
  * // Hex
@@ -217,7 +190,7 @@ function newMSColor_fromHEX(hex) {
  * @returns
  */
 
-function newMSColorFromString(color) {
+function newColorFromString(color) {
   return MSImmutableColor.colorWithSVGString(color).newMutableCounterpart();
 }
 /**
@@ -484,7 +457,7 @@ function on_test_new_text_layer(context) {
     "content": "content",
     "fontSize": 14,
     "lineHeight": 20,
-    "color": Object(_models__WEBPACK_IMPORTED_MODULE_0__["newMSColor_fromHEX"])("#000000"),
+    "color": Object(_models__WEBPACK_IMPORTED_MODULE_0__["newColorFromString"])("#000000"),
     "fontName": "Menlo-Regular"
   };
   var newText = Object(_models__WEBPACK_IMPORTED_MODULE_0__["newTextLayer"])(text);
@@ -500,7 +473,7 @@ function on_test_new_shape_group(context) {
     width: 200,
     height: 200
   };
-  var newColor = Object(_models__WEBPACK_IMPORTED_MODULE_0__["newMSColor_fromHEX"])("#000000");
+  var newColor = Object(_models__WEBPACK_IMPORTED_MODULE_0__["newColorFromString"])("#000000");
   var newShape = Object(_models__WEBPACK_IMPORTED_MODULE_0__["newShapeGroup"])(rect, newColor);
   document.currentPage().addLayer(newShape);
   console.log(newShape);

@@ -1,5 +1,5 @@
 import { addTextLayer, addSharedStyle_fromStyle, isLayerExist, getLayer_byName, isSharedTextStyleExist, updateSharedStyle_fromLayer, hasSharedStyle } from '../functions';
-import { newMSColor_fromHEX, newSharedStyle_fromLayer } from '../models';
+import { newSharedStyle_fromLayer, newColorFromString } from '../models';
 
 const Text = require('sketch/dom').Text
 const Style = require('sketch/dom').Style
@@ -74,7 +74,7 @@ export function on_typography_scale(context) {
             for (var text_style in text_styles[text_theme]) {
                 for (var text_align in text_aligns) {
                     var colorValue = text_styles[text_theme][text_style]
-                    var color = newMSColor_fromHEX(colorValue)
+                    var color = newColorFromString(colorValue)
                     var newText = {
                         'name': text_theme + "-" + text_style + "/" + text_size + "/" + text_aligns[text_align],
                         'alignment': text_aligns[text_align],

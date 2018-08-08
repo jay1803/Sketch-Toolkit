@@ -1,4 +1,4 @@
-import { newTextLayer, newMSColor_fromHEX, newShapeGroup } from "./models";
+import { newTextLayer, newShapeGroup, newColorFromString } from "./models";
 
 export function on_test_new_text_layer(context) {
     const document = context.document;
@@ -7,7 +7,7 @@ export function on_test_new_text_layer(context) {
         "content": "content",
         "fontSize": 14,
         "lineHeight": 20,
-        "color": newMSColor_fromHEX("#000000"),
+        "color": newColorFromString("#000000"),
         "fontName": "Menlo-Regular"
     }
     var newText = newTextLayer(text);
@@ -24,7 +24,7 @@ export function on_test_new_shape_group(context) {
         width: 200,
         height: 200
     };
-    var newColor = newMSColor_fromHEX("#000000");
+    var newColor = newColorFromString("#000000");
     var newShape = newShapeGroup(rect, newColor);
     document.currentPage().addLayer(newShape);
     

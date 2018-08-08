@@ -33,20 +33,6 @@ export function newFont(fontName, fontSize) {
 }
 
 /**
- * 根据 RGB 和 不透明度 来生成 MSColor 对象
- *
- * @export
- * @param {Number} red
- * @param {Number} green
- * @param {Number} blue
- * @param {Number} opacity
- * @returns MSColor
- */
-export function newColorWithRGBA(red, green, blue, opacity) {
-    return MSColor.colorWithRed_green_blue_alpha(red / 255, green / 255, blue / 255, opacity);
-}
-
-/**
  *
  *
  * @export 将HEX转换为RGB数值
@@ -61,19 +47,6 @@ export function getRGB_fromHEX(hex) {
         blue: parseInt(result[3], 16)
     } : null;
 }
-
-
-/**
- *
- * @export 以HEX数值生成MSColor
- * @param {*} hex
- * @returns
- */
-export function newMSColor_fromHEX(hex) {
-    var color = getRGB_fromHEX(hex);
-    return MSColor.colorWithRed_green_blue_alpha(color.red / 255, color.green / 255, color.blue / 255, 1);
-}
-
 
 /**
  * // Hex
@@ -100,7 +73,7 @@ export function newMSColor_fromHEX(hex) {
  * @param {*} color
  * @returns
  */
-export function newMSColorFromString(color) {
+export function newColorFromString(color) {
     return MSImmutableColor.colorWithSVGString(color).newMutableCounterpart();
 }
 
