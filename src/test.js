@@ -1,4 +1,4 @@
-import { newTextLayer, newShapeGroup, newColorFromString, setAttribute_forLayer } from "./models";
+import { newTextLayer, newShapeGroup, newColorFromString, setAttribute_forLayer, newArtboard } from "./models";
 
 export function on_test_new_text_layer(context) {
     const document = context.document;
@@ -16,7 +16,6 @@ export function on_test_new_text_layer(context) {
 }
 
 export function on_test_new_shape_group(context) {
-    console.log("STARTING...");
     const document = context.document;
     const rect = {
         x: 0,
@@ -29,10 +28,30 @@ export function on_test_new_shape_group(context) {
     var newShape = newShapeGroup(rect, newColor);
     document.currentPage().addLayer(newShape);
     setAttribute_forLayer("backgroundColor", newColorTwo, newShape);
-    console.log(newShape.style().stylePartsOfType(0));
-    console.log(newShape);
 }
 
-export function on_test_set_arrtibutes(context) {
-    return;
+export function on_test_set_resizing(context) {
+    const document = context.document;
+    const rect = {
+        x: 0,
+        y: 0,
+        width: 200,
+        height: 200
+    };
+    var newColor = newColorFromString("#000000");
+    var newShape = newShapeGroup(rect, newColor);
+    document.currentPage().addLayer(newShape);
+    setAttribute_forLayer("resizing", "top", newShape);
+}
+
+export function on_test_new_artboard(context) {
+    const document = context.document;
+    const rect = {
+        x: 0,
+        y: 0,
+        width: 200,
+        height: 200
+    };
+    var artboard = newArtboard();
+    document.currentPage().addLayer(artboard);
 }

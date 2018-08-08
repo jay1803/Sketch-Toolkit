@@ -67,6 +67,20 @@
 			"script": "./layerName.js",
 			"handler": "set_layer_index_name",
 			"shortcut": ""
+		},
+		{
+			"name": "测试 RESIZING",
+			"identifier": "test_set_resizing",
+			"script": "./test.js",
+			"handler": "on_test_set_resizing",
+			"shortcut": ""
+		},
+		{
+			"name": "测试新增画板",
+			"identifier": "test_new_artboard",
+			"script": "./test.js",
+			"handler": "on_test_new_artboard",
+			"shortcut": ""
 		}
 	],
 	"menu": {
@@ -85,7 +99,7 @@
 			},
 			{
 				"title": "测试",
-				"items": ["test_new_text_layer", "test_new_shape_group", "test_set_name", "test_set_position", "test_set_resizing"]
+				"items": ["test_new_text_layer", "test_new_shape_group", "test_set_name", "test_set_position", "test_set_resizing", "test_new_artboard"]
 			}
 		]
 	}

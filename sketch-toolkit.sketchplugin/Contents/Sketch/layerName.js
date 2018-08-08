@@ -132,11 +132,12 @@ function set_layer_index_name(context) {
 /*!***********************!*\
   !*** ./src/models.js ***!
   \***********************/
-/*! exports provided: newFont, getRGB_fromHEX, newColorFromString, newTextStyle, newSharedStyle_fromLayer, newTextLayer, newShapeGroup, getAttribute_fromLayer, setAttribute_forLayer */
+/*! exports provided: newArtboard, newFont, getRGB_fromHEX, newColorFromString, newTextStyle, newSharedStyle_fromLayer, newTextLayer, newShapeGroup, getAttribute_fromLayer, setAttribute_forLayer */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "newArtboard", function() { return newArtboard; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "newFont", function() { return newFont; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getRGB_fromHEX", function() { return getRGB_fromHEX; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "newColorFromString", function() { return newColorFromString; });
@@ -173,6 +174,14 @@ var page = document.selectedPage;
 var selection = document.selectedLayers();
 var textStylesContainer = data.layerTextStyles();
 var stylesContainer = data.layerStyles();
+function newArtboard() {
+  var artboard = MSArtboardGroup.alloc().init();
+  artboard.frame().setX(0);
+  artboard.frame().setY(0);
+  artboard.frame().setWidth(200);
+  artboard.frame().setHeight(200);
+  return artboard;
+}
 /**
  * 生成一个 NSFont 对象
  *

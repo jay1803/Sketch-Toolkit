@@ -19,6 +19,14 @@ const textStylesContainer = data.layerTextStyles();
 const stylesContainer = data.layerStyles();
 
 
+export function newArtboard() {
+    const artboard = MSArtboardGroup.alloc().init();
+    artboard.frame().setX(0);
+    artboard.frame().setY(0);
+    artboard.frame().setWidth(200);
+    artboard.frame().setHeight(200);
+    return artboard;
+}
 
 /**
  * 生成一个 NSFont 对象

@@ -95,11 +95,12 @@ var exports =
 /*!***********************!*\
   !*** ./src/models.js ***!
   \***********************/
-/*! exports provided: newFont, getRGB_fromHEX, newColorFromString, newTextStyle, newSharedStyle_fromLayer, newTextLayer, newShapeGroup, getAttribute_fromLayer, setAttribute_forLayer */
+/*! exports provided: newArtboard, newFont, getRGB_fromHEX, newColorFromString, newTextStyle, newSharedStyle_fromLayer, newTextLayer, newShapeGroup, getAttribute_fromLayer, setAttribute_forLayer */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "newArtboard", function() { return newArtboard; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "newFont", function() { return newFont; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getRGB_fromHEX", function() { return getRGB_fromHEX; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "newColorFromString", function() { return newColorFromString; });
@@ -136,6 +137,14 @@ var page = document.selectedPage;
 var selection = document.selectedLayers();
 var textStylesContainer = data.layerTextStyles();
 var stylesContainer = data.layerStyles();
+function newArtboard() {
+  var artboard = MSArtboardGroup.alloc().init();
+  artboard.frame().setX(0);
+  artboard.frame().setY(0);
+  artboard.frame().setWidth(200);
+  artboard.frame().setHeight(200);
+  return artboard;
+}
 /**
  * 生成一个 NSFont 对象
  *
@@ -441,14 +450,15 @@ function setAttribute_forLayer(attribute, value, layer) {
 /*!*********************!*\
   !*** ./src/test.js ***!
   \*********************/
-/*! exports provided: on_test_new_text_layer, on_test_new_shape_group, on_test_set_arrtibutes */
+/*! exports provided: on_test_new_text_layer, on_test_new_shape_group, on_test_set_resizing, on_test_new_artboard */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "on_test_new_text_layer", function() { return on_test_new_text_layer; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "on_test_new_shape_group", function() { return on_test_new_shape_group; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "on_test_set_arrtibutes", function() { return on_test_set_arrtibutes; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "on_test_set_resizing", function() { return on_test_set_resizing; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "on_test_new_artboard", function() { return on_test_new_artboard; });
 /* harmony import */ var _models__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./models */ "./src/models.js");
 
 function on_test_new_text_layer(context) {
@@ -466,7 +476,6 @@ function on_test_new_text_layer(context) {
   console.log(newText);
 }
 function on_test_new_shape_group(context) {
-  console.log("STARTING...");
   var document = context.document;
   var rect = {
     x: 0,
@@ -479,11 +488,30 @@ function on_test_new_shape_group(context) {
   var newShape = Object(_models__WEBPACK_IMPORTED_MODULE_0__["newShapeGroup"])(rect, newColor);
   document.currentPage().addLayer(newShape);
   Object(_models__WEBPACK_IMPORTED_MODULE_0__["setAttribute_forLayer"])("backgroundColor", newColorTwo, newShape);
-  console.log(newShape.style().stylePartsOfType(0));
-  console.log(newShape);
 }
-function on_test_set_arrtibutes(context) {
-  return;
+function on_test_set_resizing(context) {
+  var document = context.document;
+  var rect = {
+    x: 0,
+    y: 0,
+    width: 200,
+    height: 200
+  };
+  var newColor = Object(_models__WEBPACK_IMPORTED_MODULE_0__["newColorFromString"])("#000000");
+  var newShape = Object(_models__WEBPACK_IMPORTED_MODULE_0__["newShapeGroup"])(rect, newColor);
+  document.currentPage().addLayer(newShape);
+  Object(_models__WEBPACK_IMPORTED_MODULE_0__["setAttribute_forLayer"])("resizing", "top", newShape);
+}
+function on_test_new_artboard(context) {
+  var document = context.document;
+  var rect = {
+    x: 0,
+    y: 0,
+    width: 200,
+    height: 200
+  };
+  var artboard = Object(_models__WEBPACK_IMPORTED_MODULE_0__["newArtboard"])();
+  document.currentPage().addLayer(artboard);
 }
 
 /***/ }),
@@ -519,6 +547,8 @@ module.exports = require("sketch/dom");
 }
 that['on_test_new_text_layer'] = __skpm_run.bind(this, 'on_test_new_text_layer');
 that['onRun'] = __skpm_run.bind(this, 'default');
-that['on_test_new_shape_group'] = __skpm_run.bind(this, 'on_test_new_shape_group')
+that['on_test_new_shape_group'] = __skpm_run.bind(this, 'on_test_new_shape_group');
+that['on_test_set_resizing'] = __skpm_run.bind(this, 'on_test_set_resizing');
+that['on_test_new_artboard'] = __skpm_run.bind(this, 'on_test_new_artboard')
 
 //# sourceMappingURL=test.js.map
