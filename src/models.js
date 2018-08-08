@@ -152,12 +152,12 @@ export function newTextLayer(text) {
  * @param {Object} rect var rect = {x: 0, y: 0, width: 100, heigth: 100}
  * @returns
  */
-export function newShapeGroup(rect, color) {
+export function newShapeGroup(rect) {
     const rectangle = MSRectangleShape.alloc().initWithFrame(
         CGRectMake(0, 0, rect.width, rect.height)
     );
     const shapeGroup = MSShapeGroup.shapeWithPath(rectangle);
-    shapeGroup.style().addStylePartOfType(0).color = color;
+    shapeGroup.style().addStylePartOfType(0).color = newColorFromString("#000000");
     return shapeGroup;
 }
 

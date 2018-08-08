@@ -270,10 +270,10 @@ function newTextLayer(text) {
  * @returns
  */
 
-function newShapeGroup(rect, color) {
+function newShapeGroup(rect) {
   var rectangle = MSRectangleShape.alloc().initWithFrame(CGRectMake(0, 0, rect.width, rect.height));
   var shapeGroup = MSShapeGroup.shapeWithPath(rectangle);
-  shapeGroup.style().addStylePartOfType(0).color = color;
+  shapeGroup.style().addStylePartOfType(0).color = newColorFromString("#000000");
   return shapeGroup;
 }
 /**
