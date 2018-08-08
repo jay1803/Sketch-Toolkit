@@ -19,12 +19,12 @@ const textStylesContainer = data.layerTextStyles();
 const stylesContainer = data.layerStyles();
 
 
-export function newArtboard() {
+export function newArtboard(rect) {
     const artboard = MSArtboardGroup.alloc().init();
-    artboard.frame().setX(0);
-    artboard.frame().setY(0);
-    artboard.frame().setWidth(200);
-    artboard.frame().setHeight(200);
+    artboard.frame().setX(rect.x);
+    artboard.frame().setY(rect.y);
+    artboard.frame().setWidth(rect.width);
+    artboard.frame().setHeight(rect.height);
     return artboard;
 }
 
@@ -214,6 +214,21 @@ export function getAttribute_fromLayer(attribute, layer) {
                 break;
         }
     }
+    if (layer instanceof MSArtboardGroup) {
+        switch (attribute) {
+            default: break;
+        }
+    }
+    if (layer instanceof MSPage) {
+        switch (attribute) {
+            default: break;
+        }
+    }
+    if (layer instanceof MSLayerGroup) {
+        switch (attribute) {
+            default: break;
+        }
+    }
 }
 
 export function setAttribute_forLayer(attribute, value, layer) {
@@ -286,6 +301,21 @@ export function setAttribute_forLayer(attribute, value, layer) {
         switch (attribute) {
             default:
                 break;
+        }
+    }
+    if (layer instanceof MSArtboardGroup) {
+        switch (attribute) {
+            default: break;
+        }
+    }
+    if (layer instanceof MSPage) {
+        switch (attribute) {
+            default: break;
+        }
+    }
+    if (layer instanceof MSLayerGroup) {
+        switch (attribute) {
+            default: break;
         }
     }
 }
