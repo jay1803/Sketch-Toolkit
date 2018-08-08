@@ -149,8 +149,7 @@ export function newShapeGroup(rect, color) {
         CGRectMake(0, 0, rect.width, rect.height)
     );
     const shapeGroup = MSShapeGroup.shapeWithPath(rectangle);
-    const fill = shapeGroup.style().addStylePartOfType(0);
-    fill.color = color;
+    shapeGroup.style().addStylePartOfType(0).color = color;
     return shapeGroup;
 }
 
@@ -263,7 +262,9 @@ export function setAttribute_forLayer(attribute, value, layer) {
     if (layer instanceof MSShapeGroup) {
         switch (attribute) {
             case "backgroundColor":
-                return layer;
+                layer.style().removeAllStyleFills();
+                layer.style().addStylePartOfType(0).color = value;
+                return true;
             default: 
                 break;
         }

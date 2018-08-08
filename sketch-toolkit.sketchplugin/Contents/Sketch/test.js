@@ -264,8 +264,7 @@ function newTextLayer(text) {
 function newShapeGroup(rect, color) {
   var rectangle = MSRectangleShape.alloc().initWithFrame(CGRectMake(0, 0, rect.width, rect.height));
   var shapeGroup = MSShapeGroup.shapeWithPath(rectangle);
-  var fill = shapeGroup.style().addStylePartOfType(0);
-  fill.color = color;
+  shapeGroup.style().addStylePartOfType(0).color = color;
   return shapeGroup;
 }
 /**
@@ -412,7 +411,9 @@ function setAttribute_forLayer(attribute, value, layer) {
   if (layer instanceof MSShapeGroup) {
     switch (attribute) {
       case "backgroundColor":
-        return layer;
+        layer.style().removeAllStyleFills();
+        layer.style().addStylePartOfType(0).color = value;
+        return true;
 
       default:
         break;
@@ -474,8 +475,11 @@ function on_test_new_shape_group(context) {
     height: 200
   };
   var newColor = Object(_models__WEBPACK_IMPORTED_MODULE_0__["newColorFromString"])("#000000");
+  var newColorTwo = Object(_models__WEBPACK_IMPORTED_MODULE_0__["newColorFromString"])("#FF0000");
   var newShape = Object(_models__WEBPACK_IMPORTED_MODULE_0__["newShapeGroup"])(rect, newColor);
   document.currentPage().addLayer(newShape);
+  Object(_models__WEBPACK_IMPORTED_MODULE_0__["setAttribute_forLayer"])("backgroundColor", newColorTwo, newShape);
+  console.log(newShape.style().stylePartsOfType(0));
   console.log(newShape);
 }
 function on_test_set_arrtibutes(context) {

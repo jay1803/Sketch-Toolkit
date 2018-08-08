@@ -1,4 +1,4 @@
-import { newTextLayer, newShapeGroup, newColorFromString } from "./models";
+import { newTextLayer, newShapeGroup, newColorFromString, setAttribute_forLayer } from "./models";
 
 export function on_test_new_text_layer(context) {
     const document = context.document;
@@ -25,9 +25,11 @@ export function on_test_new_shape_group(context) {
         height: 200
     };
     var newColor = newColorFromString("#000000");
+    var newColorTwo = newColorFromString("#FF0000");
     var newShape = newShapeGroup(rect, newColor);
     document.currentPage().addLayer(newShape);
-    
+    setAttribute_forLayer("backgroundColor", newColorTwo, newShape);
+    console.log(newShape.style().stylePartsOfType(0));
     console.log(newShape);
 }
 

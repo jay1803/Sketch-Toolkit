@@ -787,8 +787,7 @@ function newTextLayer(text) {
 function newShapeGroup(rect, color) {
   var rectangle = MSRectangleShape.alloc().initWithFrame(CGRectMake(0, 0, rect.width, rect.height));
   var shapeGroup = MSShapeGroup.shapeWithPath(rectangle);
-  var fill = shapeGroup.style().addStylePartOfType(0);
-  fill.color = color;
+  shapeGroup.style().addStylePartOfType(0).color = color;
   return shapeGroup;
 }
 /**
@@ -935,7 +934,9 @@ function setAttribute_forLayer(attribute, value, layer) {
   if (layer instanceof MSShapeGroup) {
     switch (attribute) {
       case "backgroundColor":
-        return layer;
+        layer.style().removeAllStyleFills();
+        layer.style().addStylePartOfType(0).color = value;
+        return true;
 
       default:
         break;
