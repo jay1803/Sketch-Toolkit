@@ -81,13 +81,20 @@
 			"script": "./test.js",
 			"handler": "on_test_new_artboard",
 			"shortcut": ""
+		},
+		{
+			"name": "测试新增图层组",
+			"identifier": "test_new_layer_group",
+			"script": "./test.js",
+			"handler": "on_test_new_layer_group",
+			"shortcut": ""
 		}
 	],
 	"menu": {
 		"title": "Toolkit",
 		"items": [{
 				"title": "选择器",
-				"items": ["select_same_name_layers"]
+				"items": ["select_same_name_layers_on_document", "select_same_name_layers_on_page"]
 			},
 			{
 				"title": "生成器",
@@ -99,7 +106,7 @@
 			},
 			{
 				"title": "测试",
-				"items": ["test_new_text_layer", "test_new_shape_group", "test_set_name", "test_set_position", "test_set_resizing", "test_new_artboard"]
+				"items": ["test_new_text_layer", "test_new_shape_group", "test_set_name", "test_set_position", "test_set_resizing", "test_new_artboard", "test_new_layer_group"]
 			}
 		]
 	}

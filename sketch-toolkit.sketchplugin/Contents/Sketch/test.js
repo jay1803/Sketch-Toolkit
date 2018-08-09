@@ -95,21 +95,22 @@ var exports =
 /*!***********************!*\
   !*** ./src/models.js ***!
   \***********************/
-/*! exports provided: newArtboard, newFont, getRGB_fromHEX, newColorFromString, newTextStyle, newSharedStyle_fromLayer, newTextLayer, newShapeGroup, getAttribute_fromLayer, setAttribute_forLayer */
+/*! exports provided: newArtboard, newColorFromString, newFont, newLayerGroup, newShapeGroup, newSharedStyle_fromLayer, newTextLayer, newTextStyle, getAttribute_fromLayer, setAttribute_forLayer, getRGB_fromHEX */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "newArtboard", function() { return newArtboard; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "newFont", function() { return newFont; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getRGB_fromHEX", function() { return getRGB_fromHEX; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "newColorFromString", function() { return newColorFromString; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "newTextStyle", function() { return newTextStyle; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "newFont", function() { return newFont; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "newLayerGroup", function() { return newLayerGroup; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "newShapeGroup", function() { return newShapeGroup; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "newSharedStyle_fromLayer", function() { return newSharedStyle_fromLayer; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "newTextLayer", function() { return newTextLayer; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "newShapeGroup", function() { return newShapeGroup; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "newTextStyle", function() { return newTextStyle; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getAttribute_fromLayer", function() { return getAttribute_fromLayer; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setAttribute_forLayer", function() { return setAttribute_forLayer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getRGB_fromHEX", function() { return getRGB_fromHEX; });
 var Document = __webpack_require__(/*! sketch/dom */ "sketch/dom").Document;
 
 var Page = __webpack_require__(/*! sketch/dom */ "sketch/dom").Page;
@@ -146,34 +147,6 @@ function newArtboard(rect) {
   return artboard;
 }
 /**
- * 生成一个 NSFont 对象
- *
- * @export
- * @param {String} fontName
- * @param {Number} fontSize
- * @returns NSFont Object
- */
-
-function newFont(fontName, fontSize) {
-  return NSFont.fontWithName_size_(fontName, fontSize);
-}
-/**
- *
- *
- * @export 将HEX转换为RGB数值
- * @param {String} hex - 颜色 HEX 数值
- * @returns
- */
-
-function getRGB_fromHEX(hex) {
-  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  return result ? {
-    red: parseInt(result[1], 16),
-    green: parseInt(result[2], 16),
-    blue: parseInt(result[3], 16)
-  } : null;
-}
-/**
  * // Hex
  * MSColorFromString("#33AE15")
  * MSColorFromString("#333")
@@ -203,22 +176,46 @@ function newColorFromString(color) {
   return MSImmutableColor.colorWithSVGString(color).newMutableCounterpart();
 }
 /**
- *
+ * 生成一个 NSFont 对象
  *
  * @export
- * @param {Object} NSColor
- * @param {Object} NSFont
- * @returns 文本样式
+ * @param {String} fontName
+ * @param {Number} fontSize
+ * @returns NSFont Object
  */
 
-function newTextStyle(NSColor, NSFont) {
-  var textStyle = MSTextStyle.styleWithAttributes_({
-    NSColor: NSColor,
-    NSFont: NSFont
-  });
-  var style = MSStyle.alloc().init();
-  style.setTextStyle_(textStyle);
-  return style;
+function newFont(fontName, fontSize) {
+  return NSFont.fontWithName_size_(fontName, fontSize);
+}
+function newLayerGroup() {
+  var rect = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
+    x: 0,
+    y: 0,
+    width: 100,
+    height: 100
+  };
+  var layerGroup = MSLayerGroup.alloc().initWithFrame(CGRectMake(rect.x, rect.y, rect.width, rect.height));
+  return layerGroup;
+}
+/**
+ *
+ * 初始化一个新的图形图层，
+ * @export
+ * @param {Object} rect var rect = {x: 0, y: 0, width: 100, height: 100}
+ * @returns
+ */
+
+function newShapeGroup() {
+  var rect = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
+    x: 0,
+    y: 0,
+    width: 100,
+    height: 100
+  };
+  var rectangle = MSRectangleShape.alloc().initWithFrame(CGRectMake(rect.x, rect.y, rect.width, rect.height));
+  var shapeGroup = MSShapeGroup.shapeWithPath(rectangle);
+  shapeGroup.style().addStylePartOfType(0).color = newColorFromString("#000000");
+  return shapeGroup;
 }
 /**
  *
@@ -264,17 +261,21 @@ function newTextLayer(text) {
 }
 /**
  *
- * 初始化一个新的图形图层，
+ *
  * @export
- * @param {Object} rect var rect = {x: 0, y: 0, width: 100, heigth: 100}
- * @returns
+ * @param {Object} NSColor
+ * @param {Object} NSFont
+ * @returns 文本样式
  */
 
-function newShapeGroup(rect) {
-  var rectangle = MSRectangleShape.alloc().initWithFrame(CGRectMake(0, 0, rect.width, rect.height));
-  var shapeGroup = MSShapeGroup.shapeWithPath(rectangle);
-  shapeGroup.style().addStylePartOfType(0).color = newColorFromString("#000000");
-  return shapeGroup;
+function newTextStyle(NSColor, NSFont) {
+  var textStyle = MSTextStyle.styleWithAttributes_({
+    NSColor: NSColor,
+    NSFont: NSFont
+  });
+  var style = MSStyle.alloc().init();
+  style.setTextStyle_(textStyle);
+  return style;
 }
 /**
  * 获取图层的某个属性
@@ -485,6 +486,22 @@ function setAttribute_forLayer(attribute, value, layer) {
     }
   }
 }
+/**
+ *
+ *
+ * @export 将HEX转换为RGB数值
+ * @param {String} hex - 颜色 HEX 数值
+ * @returns
+ */
+
+function getRGB_fromHEX(hex) {
+  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result ? {
+    red: parseInt(result[1], 16),
+    green: parseInt(result[2], 16),
+    blue: parseInt(result[3], 16)
+  } : null;
+}
 
 /***/ }),
 
@@ -492,7 +509,7 @@ function setAttribute_forLayer(attribute, value, layer) {
 /*!*********************!*\
   !*** ./src/test.js ***!
   \*********************/
-/*! exports provided: on_test_new_text_layer, on_test_new_shape_group, on_test_set_resizing, on_test_new_artboard */
+/*! exports provided: on_test_new_text_layer, on_test_new_shape_group, on_test_set_resizing, on_test_new_artboard, on_test_new_layer_group */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -501,6 +518,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "on_test_new_shape_group", function() { return on_test_new_shape_group; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "on_test_set_resizing", function() { return on_test_set_resizing; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "on_test_new_artboard", function() { return on_test_new_artboard; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "on_test_new_layer_group", function() { return on_test_new_layer_group; });
 /* harmony import */ var _models__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./models */ "./src/models.js");
 
 function on_test_new_text_layer(context) {
@@ -556,6 +574,19 @@ function on_test_new_artboard(context) {
   var artboard = Object(_models__WEBPACK_IMPORTED_MODULE_0__["newArtboard"])(rect);
   document.currentPage().addLayer(artboard);
 }
+function on_test_new_layer_group(context) {
+  var document = context.document;
+  var layerGroup = Object(_models__WEBPACK_IMPORTED_MODULE_0__["newLayerGroup"])();
+  document.currentPage().addLayer(layerGroup);
+  Object(_models__WEBPACK_IMPORTED_MODULE_0__["setAttribute_forLayer"])("x", 0, layerGroup);
+  Object(_models__WEBPACK_IMPORTED_MODULE_0__["setAttribute_forLayer"])("y", 0, layerGroup);
+  Object(_models__WEBPACK_IMPORTED_MODULE_0__["setAttribute_forLayer"])("width", 100, layerGroup);
+  Object(_models__WEBPACK_IMPORTED_MODULE_0__["setAttribute_forLayer"])("height", 100, layerGroup);
+  Object(_models__WEBPACK_IMPORTED_MODULE_0__["setAttribute_forLayer"])("name", "new_layer_group", layerGroup);
+  var layer = Object(_models__WEBPACK_IMPORTED_MODULE_0__["newShapeGroup"])();
+  layerGroup.addLayer(layer);
+  console.log(layerGroup.calculateMinimumSize());
+}
 
 /***/ }),
 
@@ -592,6 +623,7 @@ that['on_test_new_text_layer'] = __skpm_run.bind(this, 'on_test_new_text_layer')
 that['onRun'] = __skpm_run.bind(this, 'default');
 that['on_test_new_shape_group'] = __skpm_run.bind(this, 'on_test_new_shape_group');
 that['on_test_set_resizing'] = __skpm_run.bind(this, 'on_test_set_resizing');
-that['on_test_new_artboard'] = __skpm_run.bind(this, 'on_test_new_artboard')
+that['on_test_new_artboard'] = __skpm_run.bind(this, 'on_test_new_artboard');
+that['on_test_new_layer_group'] = __skpm_run.bind(this, 'on_test_new_layer_group')
 
 //# sourceMappingURL=test.js.map

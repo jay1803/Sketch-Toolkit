@@ -29,34 +29,6 @@ export function newArtboard(rect) {
 }
 
 /**
- * 生成一个 NSFont 对象
- *
- * @export
- * @param {String} fontName
- * @param {Number} fontSize
- * @returns NSFont Object
- */
-export function newFont(fontName, fontSize) {
-    return NSFont.fontWithName_size_(fontName, fontSize);
-}
-
-/**
- *
- *
- * @export 将HEX转换为RGB数值
- * @param {String} hex - 颜色 HEX 数值
- * @returns
- */
-export function getRGB_fromHEX(hex) {
-    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    return result ? {
-        red: parseInt(result[1], 16),
-        green: parseInt(result[2], 16),
-        blue: parseInt(result[3], 16)
-    } : null;
-}
-
-/**
  * // Hex
  * MSColorFromString("#33AE15")
  * MSColorFromString("#333")
@@ -86,21 +58,39 @@ export function newColorFromString(color) {
 }
 
 /**
- *
+ * 生成一个 NSFont 对象
  *
  * @export
- * @param {Object} NSColor
- * @param {Object} NSFont
- * @returns 文本样式
+ * @param {String} fontName
+ * @param {Number} fontSize
+ * @returns NSFont Object
  */
-export function newTextStyle(NSColor, NSFont) {
-    const textStyle = MSTextStyle.styleWithAttributes_({
-        NSColor: NSColor,
-        NSFont: NSFont
-    });
-    const style = MSStyle.alloc().init();
-    style.setTextStyle_(textStyle);
-    return style;
+export function newFont(fontName, fontSize) {
+    return NSFont.fontWithName_size_(fontName, fontSize);
+}
+
+export function newLayerGroup(rect={x:0, y:0, width:100, height:100}) {
+    var layerGroup = MSLayerGroup.alloc().initWithFrame(
+        CGRectMake(rect.x, rect.y, rect.width, rect.height)
+    );
+    
+    return layerGroup;
+}
+
+/**
+ *
+ * 初始化一个新的图形图层，
+ * @export
+ * @param {Object} rect var rect = {x: 0, y: 0, width: 100, height: 100}
+ * @returns
+ */
+export function newShapeGroup(rect={x:0, y:0, width:100, height:100}) {
+    const rectangle = MSRectangleShape.alloc().initWithFrame(
+        CGRectMake(rect.x, rect.y, rect.width, rect.height)
+    );
+    const shapeGroup = MSShapeGroup.shapeWithPath(rectangle);
+    shapeGroup.style().addStylePartOfType(0).color = newColorFromString("#000000");
+    return shapeGroup;
 }
 
 /**
@@ -144,21 +134,22 @@ export function newTextLayer(text) {
     return newText;
 }
 
-
 /**
  *
- * 初始化一个新的图形图层，
+ *
  * @export
- * @param {Object} rect var rect = {x: 0, y: 0, width: 100, heigth: 100}
- * @returns
+ * @param {Object} NSColor
+ * @param {Object} NSFont
+ * @returns 文本样式
  */
-export function newShapeGroup(rect) {
-    const rectangle = MSRectangleShape.alloc().initWithFrame(
-        CGRectMake(0, 0, rect.width, rect.height)
-    );
-    const shapeGroup = MSShapeGroup.shapeWithPath(rectangle);
-    shapeGroup.style().addStylePartOfType(0).color = newColorFromString("#000000");
-    return shapeGroup;
+export function newTextStyle(NSColor, NSFont) {
+    const textStyle = MSTextStyle.styleWithAttributes_({
+        NSColor: NSColor,
+        NSFont: NSFont
+    });
+    const style = MSStyle.alloc().init();
+    style.setTextStyle_(textStyle);
+    return style;
 }
 
 /**
@@ -318,4 +309,20 @@ export function setAttribute_forLayer(attribute, value, layer) {
             default: break;
         }
     }
+}
+
+/**
+ *
+ *
+ * @export 将HEX转换为RGB数值
+ * @param {String} hex - 颜色 HEX 数值
+ * @returns
+ */
+export function getRGB_fromHEX(hex) {
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+        red: parseInt(result[1], 16),
+        green: parseInt(result[2], 16),
+        blue: parseInt(result[3], 16)
+    } : null;
 }
