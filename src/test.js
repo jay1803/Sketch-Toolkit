@@ -58,15 +58,29 @@ export function on_test_new_artboard(context) {
 }
 
 export function on_test_new_layer_group(context) {
+    const newRect = {
+        x: 100,
+        y: 100,
+        width: 200,
+        height: 200
+    };
+
     const document = context.document;
-    const layerGroup = newLayerGroup();
+    const layerGroup = newLayerGroup(newRect);
     document.currentPage().addLayer(layerGroup);
-    setAttribute_forLayer("x", 0, layerGroup);
-    setAttribute_forLayer("y", 0 , layerGroup);
-    setAttribute_forLayer("width", 100, layerGroup);
-    setAttribute_forLayer("height", 100, layerGroup);
-    setAttribute_forLayer("name", "new_layer_group", layerGroup);
     const layer = newShapeGroup();
     layerGroup.addLayer(layer);
-    console.log(layerGroup.calculateMinimumSize());
+    layerGroup.resizeToFitChildrenWithOption(layer.rect);
+}
+
+export function on_test_get_all_symbols(context) {
+    const document = context.document;
+}
+
+export function on_test_mark_symbol_name(context) {
+    const document = context.document;
+    const selection = context.selection;
+    const instance = selection[0];
+
+    console.log(instance.symbolMaster().name());
 }

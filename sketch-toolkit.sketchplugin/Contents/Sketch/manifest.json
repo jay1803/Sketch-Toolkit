@@ -88,6 +88,13 @@
       "script": "test.js",
       "handler": "on_test_new_layer_group",
       "shortcut": ""
+    },
+    {
+      "name": "测试标记 Symbol 名称",
+      "identifier": "test_mark_symbol_name",
+      "script": "test.js",
+      "handler": "on_test_mark_symbol_name",
+      "shortcut": ""
     }
   ],
   "menu": {
@@ -123,7 +130,8 @@
           "test_set_position",
           "test_set_resizing",
           "test_new_artboard",
-          "test_new_layer_group"
+          "test_new_layer_group",
+          "test_mark_symbol_name"
         ]
       }
     ]

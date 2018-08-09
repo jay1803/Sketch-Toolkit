@@ -509,7 +509,7 @@ function getRGB_fromHEX(hex) {
 /*!*********************!*\
   !*** ./src/test.js ***!
   \*********************/
-/*! exports provided: on_test_new_text_layer, on_test_new_shape_group, on_test_set_resizing, on_test_new_artboard, on_test_new_layer_group */
+/*! exports provided: on_test_new_text_layer, on_test_new_shape_group, on_test_set_resizing, on_test_new_artboard, on_test_new_layer_group, on_test_get_all_symbols, on_test_mark_symbol_name */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -519,6 +519,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "on_test_set_resizing", function() { return on_test_set_resizing; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "on_test_new_artboard", function() { return on_test_new_artboard; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "on_test_new_layer_group", function() { return on_test_new_layer_group; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "on_test_get_all_symbols", function() { return on_test_get_all_symbols; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "on_test_mark_symbol_name", function() { return on_test_mark_symbol_name; });
 /* harmony import */ var _models__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./models */ "./src/models.js");
 
 function on_test_new_text_layer(context) {
@@ -575,17 +577,27 @@ function on_test_new_artboard(context) {
   document.currentPage().addLayer(artboard);
 }
 function on_test_new_layer_group(context) {
+  var newRect = {
+    x: 100,
+    y: 100,
+    width: 200,
+    height: 200
+  };
   var document = context.document;
-  var layerGroup = Object(_models__WEBPACK_IMPORTED_MODULE_0__["newLayerGroup"])();
+  var layerGroup = Object(_models__WEBPACK_IMPORTED_MODULE_0__["newLayerGroup"])(newRect);
   document.currentPage().addLayer(layerGroup);
-  Object(_models__WEBPACK_IMPORTED_MODULE_0__["setAttribute_forLayer"])("x", 0, layerGroup);
-  Object(_models__WEBPACK_IMPORTED_MODULE_0__["setAttribute_forLayer"])("y", 0, layerGroup);
-  Object(_models__WEBPACK_IMPORTED_MODULE_0__["setAttribute_forLayer"])("width", 100, layerGroup);
-  Object(_models__WEBPACK_IMPORTED_MODULE_0__["setAttribute_forLayer"])("height", 100, layerGroup);
-  Object(_models__WEBPACK_IMPORTED_MODULE_0__["setAttribute_forLayer"])("name", "new_layer_group", layerGroup);
   var layer = Object(_models__WEBPACK_IMPORTED_MODULE_0__["newShapeGroup"])();
   layerGroup.addLayer(layer);
-  console.log(layerGroup.calculateMinimumSize());
+  layerGroup.resizeToFitChildrenWithOption(layer.rect);
+}
+function on_test_get_all_symbols(context) {
+  var document = context.document;
+}
+function on_test_mark_symbol_name(context) {
+  var document = context.document;
+  var selection = context.selection;
+  var instance = selection[0];
+  console.log(instance.symbolMaster().name());
 }
 
 /***/ }),
@@ -624,6 +636,7 @@ that['onRun'] = __skpm_run.bind(this, 'default');
 that['on_test_new_shape_group'] = __skpm_run.bind(this, 'on_test_new_shape_group');
 that['on_test_set_resizing'] = __skpm_run.bind(this, 'on_test_set_resizing');
 that['on_test_new_artboard'] = __skpm_run.bind(this, 'on_test_new_artboard');
-that['on_test_new_layer_group'] = __skpm_run.bind(this, 'on_test_new_layer_group')
+that['on_test_new_layer_group'] = __skpm_run.bind(this, 'on_test_new_layer_group');
+that['on_test_mark_symbol_name'] = __skpm_run.bind(this, 'on_test_mark_symbol_name')
 
 //# sourceMappingURL=test.js.map
