@@ -80,17 +80,26 @@ export function on_test_mark_symbol_name(context) {
     console.log(instance.symbolMaster().name());
 }
 
-function square(rect) {
-    for (var x = rect.x; x < rect.width; x += (rect.width / 2)) {
-        var shapeRect = {
-            x: x,
-            y: y,
-            width: rect.width / 2,
-            height: rect.height / 2,
-        };
-        var shape = newShape('rectangle', shapeRect);
-        if (shapeRect.x == rect.x && shapeRect.y == rect.y) {
-            shape.removeCurvePointAtIndex(1);
+function one_square(rect, points) {
+        var shape1 = newShape('rectangle', rect);
+        var shape2 = newShape('rectangle', rect);
+        shape1.removeCurvePointAtIndex(points[0]);
+        shape2.removeCurvePointAtIndex(points[1]);
+    }
+}
+
+function fourSquare(rect) {
+    const newRect = {
+        x: rect.x,
+        y: rect.y,
+        width: rect.width / 2,
+        height: rect.height / 2
+    };
+    for (var i = 0; i < 4; i += 1) {
+        if (i % 2 == 0) {
+            one_square(newRect, [1, 3]);
+        } else {
+            one_square(newRect, [0, 2]);
         }
     }
 }

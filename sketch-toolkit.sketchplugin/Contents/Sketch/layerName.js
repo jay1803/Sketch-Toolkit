@@ -490,9 +490,6 @@ function setAttribute_forLayer(attribute, value, layer) {
       }
 
       break;
-
-    default:
-      break;
   }
 
   if (layer instanceof MSShapeGroup) {
@@ -509,6 +506,21 @@ function setAttribute_forLayer(attribute, value, layer) {
 
   if (layer instanceof MSTextLayer) {
     switch (attribute) {
+      case "color":
+        return layer.setTextColor(value);
+
+      case "lineHeight":
+        return layer.setLineHeight(value);
+
+      case "content":
+        return layer.setStringValue(value);
+
+      case "fontFamily":
+        return layer.setFontPostscriptName(value);
+
+      case "fontSize":
+        return layer.setFontSize(value);
+
       default:
         break;
     }

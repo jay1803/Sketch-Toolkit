@@ -293,8 +293,6 @@ export function setAttribute_forLayer(attribute, value, layer) {
                     return layer.setFixed_forEdge(false, 63);
             }
             break;
-        default:
-            break;
     }
     if (layer instanceof MSShapeGroup) {
         switch (attribute) {
@@ -308,6 +306,16 @@ export function setAttribute_forLayer(attribute, value, layer) {
     }
     if (layer instanceof MSTextLayer) {
         switch (attribute) {
+            case "color":
+                return layer.setTextColor(value);
+            case "lineHeight":
+                return layer.setLineHeight(value);
+            case "content":
+                return layer.setStringValue(value);
+            case "fontFamily":
+                return layer.setFontPostscriptName(value);
+            case "fontSize":
+                return layer.setFontSize(value);
             default: break;
         }
     }
