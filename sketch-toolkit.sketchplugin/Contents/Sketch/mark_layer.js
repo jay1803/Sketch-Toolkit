@@ -581,7 +581,7 @@ function mark_layer_color_value(context) {
 /*!***********************!*\
   !*** ./src/models.js ***!
   \***********************/
-/*! exports provided: newArtboard, newColorFromString, newFont, newLayerGroup, newShapeGroup, newSharedStyle_fromLayer, newTextLayer, newTextStyle, getAttribute_fromLayer, setAttribute_forLayer, getRGB_fromHEX */
+/*! exports provided: newArtboard, newColorFromString, newFont, newLayerGroup, newShapeGroup, newSharedStyle_fromLayer, initTextLayer, newTextLayer, newTextStyle, getAttribute_fromLayer, setAttribute_forLayer, getRGB_fromHEX */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -592,6 +592,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "newLayerGroup", function() { return newLayerGroup; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "newShapeGroup", function() { return newShapeGroup; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "newSharedStyle_fromLayer", function() { return newSharedStyle_fromLayer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "initTextLayer", function() { return initTextLayer; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "newTextLayer", function() { return newTextLayer; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "newTextStyle", function() { return newTextStyle; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getAttribute_fromLayer", function() { return getAttribute_fromLayer; });
@@ -691,15 +692,29 @@ function newLayerGroup() {
  * @returns
  */
 
-function newShapeGroup() {
-  var rect = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
+function newShapeGroup(shape) {
+  var rect = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {
     x: 0,
     y: 0,
     width: 100,
     height: 100
   };
-  var rectangle = MSRectangleShape.alloc().initWithFrame(CGRectMake(rect.x, rect.y, rect.width, rect.height));
-  var shapeGroup = MSShapeGroup.shapeWithPath(rectangle);
+  var newShape;
+
+  switch (shape) {
+    case "rectangle":
+      newShape = MSRectangleShape.alloc().initWithFrame(CGRectMake(rect.x, rect.y, rect.width, rect.height));
+      break;
+
+    case "oval":
+      newShape = MSOvalShape.alloc().initWithFrame(CGRectMake(rect.x, rect.y, rect.width, rect.height));
+      break;
+
+    default:
+      break;
+  }
+
+  var shapeGroup = MSShapeGroup.shapeWithPath(newShape);
   shapeGroup.style().addStylePartOfType(0).color = newColorFromString("#000000");
   return shapeGroup;
 }
@@ -735,7 +750,7 @@ function newSharedStyle_fromLayer(layer) {
  * @returns
  */
 
-function newTextLayer(text) {
+function initTextLayer(text) {
   var newText = MSTextLayer.new();
   newText.setName(text.layerName);
   newText.setStringValue(text.content);
@@ -745,19 +760,25 @@ function newTextLayer(text) {
   newText.setFontPostscriptName(text.fontName);
   return newText;
 }
+function newTextLayer(textStyle) {
+  var textLayer = MSTextLayer.alloc().init();
+  textLayer.setStringValue("New Text");
+  textLayer.setStyle(textStyle);
+  return textLayer;
+}
 /**
  *
  *
  * @export
- * @param {Object} NSColor
- * @param {Object} NSFont
+ * @param {Object} font
+ * @param {Object} color
  * @returns 文本样式
  */
 
-function newTextStyle(NSColor, NSFont) {
+function newTextStyle(font, color) {
   var textStyle = MSTextStyle.styleWithAttributes_({
-    NSColor: NSColor,
-    NSFont: NSFont
+    NSColor: color,
+    NSFont: font
   });
   var style = MSStyle.alloc().init();
   style.setTextStyle_(textStyle);

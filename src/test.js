@@ -1,18 +1,12 @@
-import { newTextLayer, newShapeGroup, newColorFromString, setAttribute_forLayer, newArtboard, newLayerGroup } from "./models";
+import { newTextLayer, newShapeGroup, newColorFromString, setAttribute_forLayer, newArtboard, newLayerGroup, newFont, newTextStyle } from "./models";
 
 export function on_test_new_text_layer(context) {
     const document = context.document;
-    var text = {
-        "layerName": "name",
-        "content": "content",
-        "fontSize": 14,
-        "lineHeight": 20,
-        "color": newColorFromString("#000000"),
-        "fontName": "Menlo-Regular"
-    }
-    var newText = newTextLayer(text);
-    document.currentPage().addLayer(newText);
-    console.log(newText);
+    var font = newFont("PingFang SC");
+    var color = newColorFromString("#000000");
+    var textStyle = newTextStyle(font, color);
+    var text = newTextLayer(textStyle);
+    document.currentPage().addLayer(text);
 }
 
 export function on_test_new_shape_group(context) {

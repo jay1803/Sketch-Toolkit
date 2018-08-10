@@ -84,11 +84,23 @@ export function newLayerGroup(rect={x:0, y:0, width:100, height:100}) {
  * @param {Object} rect var rect = {x: 0, y: 0, width: 100, height: 100}
  * @returns
  */
-export function newShapeGroup(rect={x:0, y:0, width:100, height:100}) {
-    const rectangle = MSRectangleShape.alloc().initWithFrame(
-        CGRectMake(rect.x, rect.y, rect.width, rect.height)
-    );
-    const shapeGroup = MSShapeGroup.shapeWithPath(rectangle);
+export function newShapeGroup(shape, rect={x:0, y:0, width:100, height:100}) {
+    var newShape;
+    switch (shape) {
+        case "rectangle":
+            newShape = MSRectangleShape.alloc().initWithFrame(
+                CGRectMake(rect.x, rect.y, rect.width, rect.height)
+            );
+            break;
+        case "oval":
+            newShape = MSOvalShape.alloc().initWithFrame(
+                CGRectMake(rect.x, rect.y, rect.width, rect.height)
+            );
+            break;
+        default:
+            break;
+    }
+    const shapeGroup = MSShapeGroup.shapeWithPath(newShape);
     shapeGroup.style().addStylePartOfType(0).color = newColorFromString("#000000");
     return shapeGroup;
 }
@@ -123,7 +135,7 @@ export function newSharedStyle_fromLayer(layer) {
  * @param
  * @returns
  */
-export function newTextLayer(text) {
+export function initTextLayer(text) {
     var newText = MSTextLayer.new();
     newText.setName(text.layerName);
     newText.setStringValue(text.content);
@@ -134,18 +146,25 @@ export function newTextLayer(text) {
     return newText;
 }
 
+export function newTextLayer(textStyle) {
+    var textLayer = MSTextLayer.alloc().init();
+    textLayer.setStringValue("New Text");
+    textLayer.setStyle(textStyle);
+    return textLayer;
+}
+
 /**
  *
  *
  * @export
- * @param {Object} NSColor
- * @param {Object} NSFont
+ * @param {Object} font
+ * @param {Object} color
  * @returns 文本样式
  */
-export function newTextStyle(NSColor, NSFont) {
+export function newTextStyle(font, color) {
     const textStyle = MSTextStyle.styleWithAttributes_({
-        NSColor: NSColor,
-        NSFont: NSFont
+        NSColor: color,
+        NSFont: font
     });
     const style = MSStyle.alloc().init();
     style.setTextStyle_(textStyle);

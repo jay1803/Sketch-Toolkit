@@ -95,7 +95,7 @@ var exports =
 /*!***********************!*\
   !*** ./src/models.js ***!
   \***********************/
-/*! exports provided: newArtboard, newColorFromString, newFont, newLayerGroup, newShapeGroup, newSharedStyle_fromLayer, newTextLayer, newTextStyle, getAttribute_fromLayer, setAttribute_forLayer, getRGB_fromHEX */
+/*! exports provided: newArtboard, newColorFromString, newFont, newLayerGroup, newShapeGroup, newSharedStyle_fromLayer, initTextLayer, newTextLayer, newTextStyle, getAttribute_fromLayer, setAttribute_forLayer, getRGB_fromHEX */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -106,6 +106,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "newLayerGroup", function() { return newLayerGroup; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "newShapeGroup", function() { return newShapeGroup; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "newSharedStyle_fromLayer", function() { return newSharedStyle_fromLayer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "initTextLayer", function() { return initTextLayer; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "newTextLayer", function() { return newTextLayer; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "newTextStyle", function() { return newTextStyle; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getAttribute_fromLayer", function() { return getAttribute_fromLayer; });
@@ -205,15 +206,29 @@ function newLayerGroup() {
  * @returns
  */
 
-function newShapeGroup() {
-  var rect = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
+function newShapeGroup(shape) {
+  var rect = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {
     x: 0,
     y: 0,
     width: 100,
     height: 100
   };
-  var rectangle = MSRectangleShape.alloc().initWithFrame(CGRectMake(rect.x, rect.y, rect.width, rect.height));
-  var shapeGroup = MSShapeGroup.shapeWithPath(rectangle);
+  var newShape;
+
+  switch (shape) {
+    case "rectangle":
+      newShape = MSRectangleShape.alloc().initWithFrame(CGRectMake(rect.x, rect.y, rect.width, rect.height));
+      break;
+
+    case "oval":
+      newShape = MSOvalShape.alloc().initWithFrame(CGRectMake(rect.x, rect.y, rect.width, rect.height));
+      break;
+
+    default:
+      break;
+  }
+
+  var shapeGroup = MSShapeGroup.shapeWithPath(newShape);
   shapeGroup.style().addStylePartOfType(0).color = newColorFromString("#000000");
   return shapeGroup;
 }
@@ -249,7 +264,7 @@ function newSharedStyle_fromLayer(layer) {
  * @returns
  */
 
-function newTextLayer(text) {
+function initTextLayer(text) {
   var newText = MSTextLayer.new();
   newText.setName(text.layerName);
   newText.setStringValue(text.content);
@@ -259,19 +274,25 @@ function newTextLayer(text) {
   newText.setFontPostscriptName(text.fontName);
   return newText;
 }
+function newTextLayer(textStyle) {
+  var textLayer = MSTextLayer.alloc().init();
+  textLayer.setStringValue("New Text");
+  textLayer.setStyle(textStyle);
+  return textLayer;
+}
 /**
  *
  *
  * @export
- * @param {Object} NSColor
- * @param {Object} NSFont
+ * @param {Object} font
+ * @param {Object} color
  * @returns 文本样式
  */
 
-function newTextStyle(NSColor, NSFont) {
+function newTextStyle(font, color) {
   var textStyle = MSTextStyle.styleWithAttributes_({
-    NSColor: NSColor,
-    NSFont: NSFont
+    NSColor: color,
+    NSFont: font
   });
   var style = MSStyle.alloc().init();
   style.setTextStyle_(textStyle);
@@ -525,17 +546,11 @@ __webpack_require__.r(__webpack_exports__);
 
 function on_test_new_text_layer(context) {
   var document = context.document;
-  var text = {
-    "layerName": "name",
-    "content": "content",
-    "fontSize": 14,
-    "lineHeight": 20,
-    "color": Object(_models__WEBPACK_IMPORTED_MODULE_0__["newColorFromString"])("#000000"),
-    "fontName": "Menlo-Regular"
-  };
-  var newText = Object(_models__WEBPACK_IMPORTED_MODULE_0__["newTextLayer"])(text);
-  document.currentPage().addLayer(newText);
-  console.log(newText);
+  var font = Object(_models__WEBPACK_IMPORTED_MODULE_0__["newFont"])("PingFang SC");
+  var color = Object(_models__WEBPACK_IMPORTED_MODULE_0__["newColorFromString"])("#000000");
+  var textStyle = Object(_models__WEBPACK_IMPORTED_MODULE_0__["newTextStyle"])(font, color);
+  var text = Object(_models__WEBPACK_IMPORTED_MODULE_0__["newTextLayer"])(textStyle);
+  document.currentPage().addLayer(text);
 }
 function on_test_new_shape_group(context) {
   var document = context.document;
