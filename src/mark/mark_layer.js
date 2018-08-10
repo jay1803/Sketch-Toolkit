@@ -1,4 +1,4 @@
-import { newTextLayer, getShapeAttr, getTextAttr, getAttribute_fromLayer } from "../models";
+import { newTextLayer, getShapeAttr, getTextAttr, getAttribute_fromLayer, initTextLayer } from "../models";
 import { getHex_fromLayer, autoTextColor } from "../functions";
 
 function newText(layerName, textContent, layer) {
@@ -20,10 +20,10 @@ export function mark_layer_name(context) {
         return false;
     }
     selection.forEach(layer => {
-        var textLayer = newTextLayer(newText("name", layer.name(), layer));
+        var textLayer = initTextLayer(newText("name", layer.name(), layer));
         layer.parentForInsertingLayers().addLayer(textLayer);
-        textLayer.frame().setX(getAttribute_fromLayer("x", layer) + 10);
-        textLayer.frame().setY(getAttribute_fromLayer("y", layer) + (getAttribute_fromLayer("height", layer) - 20) / 2);
+        textLayer.frame().setX(getAttribute_fromLayer("x", layer) + 20);
+        textLayer.frame().setY(getAttribute_fromLayer("y", layer) + 20);
     });
 }
 

@@ -526,10 +526,10 @@ function mark_layer_name(context) {
   }
 
   selection.forEach(function (layer) {
-    var textLayer = Object(_models__WEBPACK_IMPORTED_MODULE_0__["newTextLayer"])(newText("name", layer.name(), layer));
+    var textLayer = Object(_models__WEBPACK_IMPORTED_MODULE_0__["initTextLayer"])(newText("name", layer.name(), layer));
     layer.parentForInsertingLayers().addLayer(textLayer);
-    textLayer.frame().setX(Object(_models__WEBPACK_IMPORTED_MODULE_0__["getAttribute_fromLayer"])("x", layer) + 10);
-    textLayer.frame().setY(Object(_models__WEBPACK_IMPORTED_MODULE_0__["getAttribute_fromLayer"])("y", layer) + (Object(_models__WEBPACK_IMPORTED_MODULE_0__["getAttribute_fromLayer"])("height", layer) - 20) / 2);
+    textLayer.frame().setX(Object(_models__WEBPACK_IMPORTED_MODULE_0__["getAttribute_fromLayer"])("x", layer) + 20);
+    textLayer.frame().setY(Object(_models__WEBPACK_IMPORTED_MODULE_0__["getAttribute_fromLayer"])("y", layer) + 20);
   });
 }
 function mark_layer_opacity(context) {

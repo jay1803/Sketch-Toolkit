@@ -102,6 +102,13 @@
 			"script": "./test.js",
 			"handler": "on_test_generate_shapes",
 			"shortcut": ""
+		},
+		{
+			"name": "测试自动排列形状",
+			"identifier": "test_layout_shapes",
+			"script": "./test.js",
+			"handler": "on_test_layout_shapes",
+			"shortcut": ""
 		}
 	],
 	"menu": {
@@ -120,7 +127,18 @@
 			},
 			{
 				"title": "测试",
-				"items": ["test_new_text_layer", "test_new_shape_group", "test_set_name", "test_set_position", "test_set_resizing", "test_new_artboard", "test_new_layer_group", "test_mark_symbol_name", "test_generate_shapes"]
+				"items": [
+					"test_new_text_layer",
+					"test_new_shape_group",
+					"test_set_name",
+					"test_set_position",
+					"test_set_resizing",
+					"test_new_artboard",
+					"test_new_layer_group",
+					"test_mark_symbol_name",
+					"test_generate_shapes",
+					"test_layout_shapes"
+				]
 			}
 		]
 	}
