@@ -95,6 +95,13 @@
       "script": "test.js",
       "handler": "on_test_mark_symbol_name",
       "shortcut": ""
+    },
+    {
+      "name": "测试生成形状",
+      "identifier": "test_generate_shapes",
+      "script": "test.js",
+      "handler": "on_test_generate_shapes",
+      "shortcut": ""
     }
   ],
   "menu": {
@@ -131,7 +138,8 @@
           "test_set_resizing",
           "test_new_artboard",
           "test_new_layer_group",
-          "test_mark_symbol_name"
+          "test_mark_symbol_name",
+          "test_generate_shapes"
         ]
       }
     ]

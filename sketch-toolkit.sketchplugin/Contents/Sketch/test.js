@@ -95,7 +95,7 @@ var exports =
 /*!***********************!*\
   !*** ./src/models.js ***!
   \***********************/
-/*! exports provided: newArtboard, newColorFromString, newFont, newLayerGroup, newShapeGroup, newSharedStyle_fromLayer, initTextLayer, newTextLayer, newTextStyle, getAttribute_fromLayer, setAttribute_forLayer, getRGB_fromHEX */
+/*! exports provided: newArtboard, newColorFromString, newFont, newLayerGroup, newShape, newShapeGroup, newSharedStyle_fromLayer, initTextLayer, newTextLayer, newTextStyle, getAttribute_fromLayer, setAttribute_forLayer, getRGB_fromHEX */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -104,6 +104,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "newColorFromString", function() { return newColorFromString; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "newFont", function() { return newFont; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "newLayerGroup", function() { return newLayerGroup; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "newShape", function() { return newShape; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "newShapeGroup", function() { return newShapeGroup; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "newSharedStyle_fromLayer", function() { return newSharedStyle_fromLayer; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "initTextLayer", function() { return initTextLayer; });
@@ -198,6 +199,24 @@ function newLayerGroup() {
   var layerGroup = MSLayerGroup.alloc().initWithFrame(CGRectMake(rect.x, rect.y, rect.width, rect.height));
   return layerGroup;
 }
+function newShape(shapeType, rect) {
+  var shape;
+
+  switch (shapeType) {
+    case "rectangle":
+      shape = MSRectangleShape.alloc().initWithFrame(CGRectMake(rect.x, rect.y, rect.width, rect.height));
+      break;
+
+    case "oval":
+      shape = MSOvalShape.alloc().initWithFrame(CGRectMake(rect.x, rect.y, rect.width, rect.height));
+      break;
+
+    default:
+      break;
+  }
+
+  return shape;
+}
 /**
  *
  * 初始化一个新的图形图层，
@@ -207,28 +226,7 @@ function newLayerGroup() {
  */
 
 function newShapeGroup(shape) {
-  var rect = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {
-    x: 0,
-    y: 0,
-    width: 100,
-    height: 100
-  };
-  var newShape;
-
-  switch (shape) {
-    case "rectangle":
-      newShape = MSRectangleShape.alloc().initWithFrame(CGRectMake(rect.x, rect.y, rect.width, rect.height));
-      break;
-
-    case "oval":
-      newShape = MSOvalShape.alloc().initWithFrame(CGRectMake(rect.x, rect.y, rect.width, rect.height));
-      break;
-
-    default:
-      break;
-  }
-
-  var shapeGroup = MSShapeGroup.shapeWithPath(newShape);
+  var shapeGroup = MSShapeGroup.shapeWithPath(shape);
   shapeGroup.style().addStylePartOfType(0).color = newColorFromString("#000000");
   return shapeGroup;
 }
@@ -530,7 +528,7 @@ function getRGB_fromHEX(hex) {
 /*!*********************!*\
   !*** ./src/test.js ***!
   \*********************/
-/*! exports provided: on_test_new_text_layer, on_test_new_shape_group, on_test_set_resizing, on_test_new_artboard, on_test_new_layer_group, on_test_get_all_symbols, on_test_mark_symbol_name */
+/*! exports provided: on_test_new_text_layer, on_test_new_shape_group, on_test_set_resizing, on_test_new_artboard, on_test_new_layer_group, on_test_get_all_symbols, on_test_mark_symbol_name, on_test_generate_shapes */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -542,6 +540,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "on_test_new_layer_group", function() { return on_test_new_layer_group; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "on_test_get_all_symbols", function() { return on_test_get_all_symbols; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "on_test_mark_symbol_name", function() { return on_test_mark_symbol_name; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "on_test_generate_shapes", function() { return on_test_generate_shapes; });
 /* harmony import */ var _models__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./models */ "./src/models.js");
 
 function on_test_new_text_layer(context) {
@@ -615,6 +614,58 @@ function on_test_mark_symbol_name(context) {
   console.log(instance.symbolMaster().name());
 }
 
+function square(rect) {
+  for (var x = rect.x; x < rect.width; x += rect.width / 2) {
+    var shapeRect = {
+      x: x,
+      y: y,
+      width: rect.width / 2,
+      height: rect.height / 2
+    };
+    var shape = Object(_models__WEBPACK_IMPORTED_MODULE_0__["newShape"])('rectangle', shapeRect);
+
+    if (shapeRect.x == rect.x && shapeRect.y == rect.y) {
+      shape.removeCurvePointAtIndex(1);
+    }
+  }
+}
+
+function on_test_generate_shapes(context) {
+  var document = context.document;
+  var page = document.currentPage();
+  var rect = {
+    x: 0,
+    y: 0,
+    width: 400,
+    height: 400
+  };
+  var artboard = Object(_models__WEBPACK_IMPORTED_MODULE_0__["newArtboard"])(rect);
+  page.addLayer(artboard);
+  var shapeRect = {
+    x: 0,
+    y: 0,
+    width: 100,
+    height: 100
+  };
+
+  for (var y = shapeRect.y; y < rect.height; y += shapeRect.height) {
+    for (var x = shapeRect.x; x < rect.width; x += shapeRect.width) {
+      shapeRect.x = x;
+      shapeRect.y = y;
+      var shape1 = Object(_models__WEBPACK_IMPORTED_MODULE_0__["newShape"])('rectangle', shapeRect);
+      shape1.removeCurvePointAtIndex(1);
+      var shape2 = Object(_models__WEBPACK_IMPORTED_MODULE_0__["newShape"])('rectangle', shapeRect);
+      shape2.removeCurvePointAtIndex(3);
+      var layer1 = Object(_models__WEBPACK_IMPORTED_MODULE_0__["newShapeGroup"])(shape1);
+      var layer2 = Object(_models__WEBPACK_IMPORTED_MODULE_0__["newShapeGroup"])(shape2);
+      artboard.addLayer(layer1);
+      artboard.addLayer(layer2);
+    }
+
+    shapeRect.x = 0;
+  }
+}
+
 /***/ }),
 
 /***/ "sketch":
@@ -652,6 +703,7 @@ that['on_test_new_shape_group'] = __skpm_run.bind(this, 'on_test_new_shape_group
 that['on_test_set_resizing'] = __skpm_run.bind(this, 'on_test_set_resizing');
 that['on_test_new_artboard'] = __skpm_run.bind(this, 'on_test_new_artboard');
 that['on_test_new_layer_group'] = __skpm_run.bind(this, 'on_test_new_layer_group');
-that['on_test_mark_symbol_name'] = __skpm_run.bind(this, 'on_test_mark_symbol_name')
+that['on_test_mark_symbol_name'] = __skpm_run.bind(this, 'on_test_mark_symbol_name');
+that['on_test_generate_shapes'] = __skpm_run.bind(this, 'on_test_generate_shapes')
 
 //# sourceMappingURL=test.js.map

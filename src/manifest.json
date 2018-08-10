@@ -95,6 +95,13 @@
 			"script": "./test.js",
 			"handler": "on_test_mark_symbol_name",
 			"shortcut": ""
+		},
+		{
+			"name": "测试生成形状",
+			"identifier": "test_generate_shapes",
+			"script": "./test.js",
+			"handler": "on_test_generate_shapes",
+			"shortcut": ""
 		}
 	],
 	"menu": {
@@ -113,7 +120,7 @@
 			},
 			{
 				"title": "测试",
-				"items": ["test_new_text_layer", "test_new_shape_group", "test_set_name", "test_set_position", "test_set_resizing", "test_new_artboard", "test_new_layer_group", "test_mark_symbol_name"]
+				"items": ["test_new_text_layer", "test_new_shape_group", "test_set_name", "test_set_position", "test_set_resizing", "test_new_artboard", "test_new_layer_group", "test_mark_symbol_name", "test_generate_shapes"]
 			}
 		]
 	}

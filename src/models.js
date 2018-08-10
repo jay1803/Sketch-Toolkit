@@ -77,6 +77,25 @@ export function newLayerGroup(rect={x:0, y:0, width:100, height:100}) {
     return layerGroup;
 }
 
+export function newShape(shapeType, rect) {
+    var shape;
+    switch (shapeType) {
+        case "rectangle":
+            shape = MSRectangleShape.alloc().initWithFrame(
+                CGRectMake(rect.x, rect.y, rect.width, rect.height)
+            );
+            break;
+        case "oval":
+            shape = MSOvalShape.alloc().initWithFrame(
+                CGRectMake(rect.x, rect.y, rect.width, rect.height)
+            );
+            break;
+        default:
+            break;
+    }
+    return shape;
+}
+
 /**
  *
  * 初始化一个新的图形图层，
@@ -84,23 +103,8 @@ export function newLayerGroup(rect={x:0, y:0, width:100, height:100}) {
  * @param {Object} rect var rect = {x: 0, y: 0, width: 100, height: 100}
  * @returns
  */
-export function newShapeGroup(shape, rect={x:0, y:0, width:100, height:100}) {
-    var newShape;
-    switch (shape) {
-        case "rectangle":
-            newShape = MSRectangleShape.alloc().initWithFrame(
-                CGRectMake(rect.x, rect.y, rect.width, rect.height)
-            );
-            break;
-        case "oval":
-            newShape = MSOvalShape.alloc().initWithFrame(
-                CGRectMake(rect.x, rect.y, rect.width, rect.height)
-            );
-            break;
-        default:
-            break;
-    }
-    const shapeGroup = MSShapeGroup.shapeWithPath(newShape);
+export function newShapeGroup(shape) {
+    const shapeGroup = MSShapeGroup.shapeWithPath(shape);
     shapeGroup.style().addStylePartOfType(0).color = newColorFromString("#000000");
     return shapeGroup;
 }

@@ -132,7 +132,7 @@ function set_layer_index_name(context) {
 /*!***********************!*\
   !*** ./src/models.js ***!
   \***********************/
-/*! exports provided: newArtboard, newColorFromString, newFont, newLayerGroup, newShapeGroup, newSharedStyle_fromLayer, initTextLayer, newTextLayer, newTextStyle, getAttribute_fromLayer, setAttribute_forLayer, getRGB_fromHEX */
+/*! exports provided: newArtboard, newColorFromString, newFont, newLayerGroup, newShape, newShapeGroup, newSharedStyle_fromLayer, initTextLayer, newTextLayer, newTextStyle, getAttribute_fromLayer, setAttribute_forLayer, getRGB_fromHEX */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -141,6 +141,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "newColorFromString", function() { return newColorFromString; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "newFont", function() { return newFont; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "newLayerGroup", function() { return newLayerGroup; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "newShape", function() { return newShape; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "newShapeGroup", function() { return newShapeGroup; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "newSharedStyle_fromLayer", function() { return newSharedStyle_fromLayer; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "initTextLayer", function() { return initTextLayer; });
@@ -235,6 +236,24 @@ function newLayerGroup() {
   var layerGroup = MSLayerGroup.alloc().initWithFrame(CGRectMake(rect.x, rect.y, rect.width, rect.height));
   return layerGroup;
 }
+function newShape(shapeType, rect) {
+  var shape;
+
+  switch (shapeType) {
+    case "rectangle":
+      shape = MSRectangleShape.alloc().initWithFrame(CGRectMake(rect.x, rect.y, rect.width, rect.height));
+      break;
+
+    case "oval":
+      shape = MSOvalShape.alloc().initWithFrame(CGRectMake(rect.x, rect.y, rect.width, rect.height));
+      break;
+
+    default:
+      break;
+  }
+
+  return shape;
+}
 /**
  *
  * 初始化一个新的图形图层，
@@ -244,28 +263,7 @@ function newLayerGroup() {
  */
 
 function newShapeGroup(shape) {
-  var rect = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {
-    x: 0,
-    y: 0,
-    width: 100,
-    height: 100
-  };
-  var newShape;
-
-  switch (shape) {
-    case "rectangle":
-      newShape = MSRectangleShape.alloc().initWithFrame(CGRectMake(rect.x, rect.y, rect.width, rect.height));
-      break;
-
-    case "oval":
-      newShape = MSOvalShape.alloc().initWithFrame(CGRectMake(rect.x, rect.y, rect.width, rect.height));
-      break;
-
-    default:
-      break;
-  }
-
-  var shapeGroup = MSShapeGroup.shapeWithPath(newShape);
+  var shapeGroup = MSShapeGroup.shapeWithPath(shape);
   shapeGroup.style().addStylePartOfType(0).color = newColorFromString("#000000");
   return shapeGroup;
 }
