@@ -6,8 +6,10 @@ export function on_test_new_text_layer(context) {
     var font = newFont("PingFang SC");
     var color = newColorFromString("#000000");
     var textStyle = newTextStyle(font, color);
-    var text = newTextLayer(textStyle);
-    document.currentPage().addLayer(text);
+    console.log(textStyle);
+    var newText = newTextLayer(textStyle);
+    console.log(newText);
+    document.currentPage().addLayer(newText);
 }
 
 export function on_test_new_shape_group(context) {
@@ -81,11 +83,10 @@ export function on_test_mark_symbol_name(context) {
 }
 
 function one_square(rect, points) {
-        var shape1 = newShape('rectangle', rect);
-        var shape2 = newShape('rectangle', rect);
-        shape1.removeCurvePointAtIndex(points[0]);
-        shape2.removeCurvePointAtIndex(points[1]);
-    }
+    var shape1 = newShape('rectangle', rect);
+    var shape2 = newShape('rectangle', rect);
+    shape1.removeCurvePointAtIndex(points[0]);
+    shape2.removeCurvePointAtIndex(points[1]);
 }
 
 function fourSquare(rect) {

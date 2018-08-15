@@ -165,9 +165,8 @@ export function newTextLayer(textStyle) {
  * @param {Object} color
  * @returns 文本样式
  */
-export function newTextStyle(font, color) {
+export function newTextStyle(font) {
     const textStyle = MSTextStyle.styleWithAttributes_({
-        NSColor: color,
         NSFont: font
     });
     const style = MSStyle.alloc().init();
@@ -206,8 +205,6 @@ export function getAttribute_fromLayer(attribute, layer) {
             return layer.frame().height();
         case "index":
             return layer.parentForInsertingLayers().indexOfLayer(layer);
-        default:
-            break;
     }
     if (layer instanceof MSShapeGroup) {
         switch (attribute) {

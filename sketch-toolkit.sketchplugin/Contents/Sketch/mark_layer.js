@@ -773,9 +773,8 @@ function newTextLayer(textStyle) {
  * @returns 文本样式
  */
 
-function newTextStyle(font, color) {
+function newTextStyle(font) {
   var textStyle = MSTextStyle.styleWithAttributes_({
-    NSColor: color,
     NSFont: font
   });
   var style = MSStyle.alloc().init();
@@ -823,9 +822,6 @@ function getAttribute_fromLayer(attribute, layer) {
 
     case "index":
       return layer.parentForInsertingLayers().indexOfLayer(layer);
-
-    default:
-      break;
   }
 
   if (layer instanceof MSShapeGroup) {
