@@ -20,17 +20,17 @@
 			"shortcut": ""
 		},
 		{
-			"name": "选择同名的图层[文档]",
-			"identifier": "select_same_name_layers_on_document",
-			"script": "./selection/selection.js",
-			"handler": "select_same_name_layers_on_document",
+			"name": "选择同名的图层[当前页面]",
+			"identifier": "select_namesake_layers",
+			"script": "./selection.js",
+			"handler": "select_namesake_layers",
 			"shortcut": ""
 		},
 		{
-			"name": "选择同名的图层[页面]",
-			"identifier": "select_same_name_layers_on_page",
-			"script": "./selection/selection.js",
-			"handler": "select_same_name_layers_on_page",
+			"name": "选择同名且同类型的图层[当前页面]",
+			"identifier": "select_namesake_and_homogeneous_layers",
+			"script": "./selection.js",
+			"handler": "select_namesake_and_homogeneous_layers",
 			"shortcut": ""
 		},
 		{
@@ -115,7 +115,10 @@
 		"title": "Toolkit",
 		"items": [{
 				"title": "选择器",
-				"items": ["select_same_name_layers_on_document", "select_same_name_layers_on_page"]
+				"items": [
+					"select_namesake_layers",
+					"select_namesake_and_homogeneous_layers"
+				]
 			},
 			{
 				"title": "生成器",

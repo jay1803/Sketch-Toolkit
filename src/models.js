@@ -157,6 +157,7 @@ export function newTextLayer(textStyle) {
     return textLayer;
 }
 
+
 /**
  *
  *

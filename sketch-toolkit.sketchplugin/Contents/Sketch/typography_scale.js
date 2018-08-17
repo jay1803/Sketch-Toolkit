@@ -95,7 +95,7 @@ var exports =
 /*!**************************!*\
   !*** ./src/functions.js ***!
   \**************************/
-/*! exports provided: getLayer_byName, getLayers_byName, getTextSharedStyle_byName, getTextSharedStyle_byID, getSharedStyle_byID, getObjectBy, getSharedStyle_byName, addTextLayer, getHex_fromMSColor, getHex_fromLayer, luminance, contrast, colorTone, getColor_fromLayer, addSharedStyle_fromStyle, updateSharedStyle_fromLayer, isLayerExist, isSharedTextStyleExist, hasSharedStyle, getAllShapeLayers, autoTextColor, selectLayer */
+/*! exports provided: getLayer_byName, getLayers_byName, getTextSharedStyle_byName, getTextSharedStyle_byID, getSharedStyle_byID, getObjectBy, getSharedStyle_byName, addTextLayer, getHex_fromMSColor, getHex_fromLayer, luminance, contrast, colorTone, getColor_fromLayer, addSharedStyle_fromStyle, updateSharedStyle_fromLayer, isLayerExist, isSharedTextStyleExist, hasSharedStyle, getAllLayers, getAllShapeLayers, getAllTextLayers, getAllSameTypeLayers, autoTextColor, selectLayer */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -119,7 +119,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isLayerExist", function() { return isLayerExist; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isSharedTextStyleExist", function() { return isSharedTextStyleExist; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "hasSharedStyle", function() { return hasSharedStyle; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getAllLayers", function() { return getAllLayers; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getAllShapeLayers", function() { return getAllShapeLayers; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getAllTextLayers", function() { return getAllTextLayers; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getAllSameTypeLayers", function() { return getAllSameTypeLayers; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "autoTextColor", function() { return autoTextColor; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectLayer", function() { return selectLayer; });
 var Document = __webpack_require__(/*! sketch/dom */ "sketch/dom").Document;
@@ -166,7 +169,11 @@ function getLayer_byName(name) {
 
 function getLayers_byName(name) {
   var predicate = NSPredicate.predicateWithFormat("name == %@", name);
-  return currentPage.children().filteredArrayUsingPredicate(predicate);
+  var layerArray = getAllShapeLayers(currentPage);
+  layerArray.forEach(function (layer) {
+    selectLayer(layer);
+  });
+  return selection.filteredArrayUsingPredicate(predicate);
 }
 /**
  *
@@ -439,6 +446,25 @@ function hasSharedStyle(layer) {
   }
 }
 /**
+ * 
+ *
+ * @export 获取所有的非文件夹图层， 也就是文本和图形。
+ * @param {*} layerGroup
+ */
+
+function getAllLayers(layerGroup) {
+  var layerList = [];
+  var layers = layerGroup.layers();
+  layers.forEach(function (layer) {
+    if (layer instanceof MSShapeGroup || layer instanceof MSTextLayer) {
+      layerList.push(layer);
+    } else if (layer.containsMultipleLayers()) {
+      layerList = layerList.concat(getAllLayers(layer));
+    }
+  });
+  return layerList;
+}
+/**
  *
  *
  * @export 获取图层组中所有图形图层
@@ -454,6 +480,46 @@ function getAllShapeLayers(layerGroup) {
       layerList.push(layer);
     } else if (layer.containsMultipleLayers()) {
       layerList = layerList.concat(getAllShapeLayers(layer));
+    }
+  });
+  return layerList;
+}
+/**
+ *
+ *
+ * @export 获取图层组中所有文本图层
+ * @param {Object} layerGroup - 图层组
+ * @returns {Array} 包含图层组中所有图形图层的列表
+ */
+
+function getAllTextLayers(layerGroup) {
+  var layerList = [];
+  var layers = layerGroup.layers();
+  layers.forEach(function (layer) {
+    if (layer instanceof MSTextLayer) {
+      layerList.push(layer);
+    } else if (layer.containsMultipleLayers()) {
+      layerList = layerList.concat(getAllShapeLayers(layer));
+    }
+  });
+  return layerList;
+}
+/**
+ *
+ *
+ * @export 获取图层组中所有同类型图层
+ * @param {Object} layerGroup - 图层组
+ * @returns {Array} 包含图层组中所有图形图层的列表
+ */
+
+function getAllSameTypeLayers(layerGroup, layerType) {
+  var layerList = [];
+  var layers = layerGroup.layers();
+  layers.forEach(function (layer) {
+    if (layer instanceof layerType) {
+      layerList.push(layer);
+    } else if (layer.containsMultipleLayers()) {
+      layerList = layerList.concat(getAllSameTypeLayers(layer, layerType));
     }
   });
   return layerList;

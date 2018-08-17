@@ -36,7 +36,11 @@ export function getLayer_byName(name) {
  */
 export function getLayers_byName(name) {
     var predicate = NSPredicate.predicateWithFormat("name == %@", name);
-    return currentPage.children().filteredArrayUsingPredicate(predicate);
+    var layerArray = getAllShapeLayers(currentPage);
+    layerArray.forEach(layer =>{
+        selectLayer(layer);
+    });
+    return selection.filteredArrayUsingPredicate(predicate);
 }
 
 /**
@@ -313,6 +317,25 @@ export function hasSharedStyle(layer) {
     }
 }
 
+/**
+ * 
+ *
+ * @export 获取所有的非文件夹图层， 也就是文本和图形。
+ * @param {*} layerGroup
+ */
+export function getAllLayers(layerGroup) {
+    var layerList = [];
+    var layers = layerGroup.layers();
+    layers.forEach(layer => {
+        if (layer instanceof MSShapeGroup || layer instanceof MSTextLayer) {
+            layerList.push(layer);
+        } else if (layer.containsMultipleLayers()) {
+            layerList = layerList.concat(getAllLayers(layer));
+        }
+    });
+    return layerList;
+}
+
 
 /**
  *
@@ -324,7 +347,7 @@ export function hasSharedStyle(layer) {
 export function getAllShapeLayers(layerGroup) {
     var layerList = [];
     var layers = layerGroup.layers();
-    layers.forEach(function(layer) {
+    layers.forEach(layer => {
         if (layer instanceof MSShapeGroup) {
             layerList.push(layer);
         } else if (layer.containsMultipleLayers()) {
@@ -333,6 +356,47 @@ export function getAllShapeLayers(layerGroup) {
     });
     return layerList;
 }
+
+/**
+ *
+ *
+ * @export 获取图层组中所有文本图层
+ * @param {Object} layerGroup - 图层组
+ * @returns {Array} 包含图层组中所有图形图层的列表
+ */
+export function getAllTextLayers(layerGroup) {
+    var layerList = [];
+    var layers = layerGroup.layers();
+    layers.forEach(layer => {
+        if (layer instanceof MSTextLayer) {
+            layerList.push(layer);
+        } else if (layer.containsMultipleLayers()) {
+            layerList = layerList.concat(getAllShapeLayers(layer));
+        }
+    });
+    return layerList;
+}
+
+/**
+ *
+ *
+ * @export 获取图层组中所有同类型图层
+ * @param {Object} layerGroup - 图层组
+ * @returns {Array} 包含图层组中所有图形图层的列表
+ */
+export function getAllSameTypeLayers(layerGroup, layerType) {
+    var layerList = [];
+    var layers = layerGroup.layers();
+    layers.forEach(layer => {
+        if (layer instanceof layerType) {
+            layerList.push(layer);
+        } else if (layer.containsMultipleLayers()) {
+            layerList = layerList.concat(getAllSameTypeLayers(layer, layerType));
+        }
+    });
+    return layerList;
+}
+
 
 
 /**
