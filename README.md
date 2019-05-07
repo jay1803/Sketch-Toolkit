@@ -1,3 +1,4 @@
+[![Board Status](https://dev.azure.com/max0454/40514dc6-8dd6-4bc2-b077-098cc1233900/d6be7807-3b44-4b7c-8f18-3ca2802fc8c4/_apis/work/boardbadge/42b1f98d-f5b0-4a32-b548-efccfe2a12bf)](https://dev.azure.com/max0454/40514dc6-8dd6-4bc2-b077-098cc1233900/_boards/board/t/d6be7807-3b44-4b7c-8f18-3ca2802fc8c4/Microsoft.RequirementCategory)
 # Sketch Toolkit
 
 Sketch 官方的 API 稀烂的情况下，最终查阅很多网络资料来整理一些基本的方法，虽然这个插件有一些可能用的命令，但其主要目的在于 Fuctions，也就是将 Sketch API 写成更简单直观的方法。
